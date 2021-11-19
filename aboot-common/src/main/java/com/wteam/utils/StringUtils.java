@@ -36,8 +36,9 @@ import java.util.regex.Pattern;
 public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
 
-    private static File file = null;
     private static DbConfig config;
+    private static File file = null;
+    private static DbSearcher dbSearcher = null;
     private static final char SEPARATOR = '_';
     private static final String UNKNOWN = "unknown";
 
@@ -50,6 +51,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         try {
             config = new DbConfig();
             file = FileUtil.inputStreamToFile(new org.springframework.core.io.ClassPathResource(path).getInputStream(), name);
+            dbSearcher = new DbSearcher(config, file.getPath());
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -224,8 +226,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      */
     public static String getCityInfo(String ip) {
         try {
-            DataBlock dataBlock = new DbSearcher(config, file.getPath())
-                    .binarySearch(ip);
+            DataBlock dataBlock = dbSearcher.binarySearch(ip);
             String region = dataBlock.getRegion();
             String address = region.replace("0|", "");
             char symbol = '|';

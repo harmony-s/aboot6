@@ -16,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author mission
  * @since 2019/07/26 16:43
  */
+@ApiIgnore
 @Api(value = "访问记录Controller",tags = {"监控：访问记录操作接口"})
 @SuppressWarnings("rawtypes")
 @RestController

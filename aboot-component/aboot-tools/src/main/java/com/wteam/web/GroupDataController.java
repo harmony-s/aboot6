@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -30,6 +31,7 @@ import java.io.IOException;
 * @since 2020-03-23
 */
 @SuppressWarnings({"rawtypes"})
+@ApiIgnore
 @Api(value="数据组Controller",tags={"新增：数据组操作"})
 @RestController
 @RequiredArgsConstructor

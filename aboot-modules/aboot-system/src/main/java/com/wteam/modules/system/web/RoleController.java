@@ -30,6 +30,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -44,6 +45,7 @@ import java.util.stream.Collectors;
  * @since 2019/07/13 15:42
  */
 @SuppressWarnings({"rawtypes"})
+@ApiIgnore
 @Api(value="角色Controller",tags={"系统：角色操作"})
 @RequiredArgsConstructor
 @RestController

@@ -17,6 +17,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -29,6 +30,7 @@ import java.util.Set;
 @SuppressWarnings("rawtypes")
 @RestController
 @RequestMapping("api/online")
+@ApiIgnore
 @Api(tags = "系统：在线用户管理")
 @PermissionGroup(value = "ONLINE", aliasPrefix = "在线用户")
 public class OnlineController {

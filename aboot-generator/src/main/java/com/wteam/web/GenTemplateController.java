@@ -19,12 +19,14 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
 * 生成模板信息 控制层.
 * @author mission
 * @since 2019-09-29
 */
+@ApiIgnore
 @Api(tags = "工具：生成模板信息管理")
 @RequiredArgsConstructor
 @RestController

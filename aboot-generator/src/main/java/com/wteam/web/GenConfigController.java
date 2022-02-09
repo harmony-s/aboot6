@@ -18,11 +18,13 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * @author mission
  * @since 2019/09/10 8:59
  */
+@ApiIgnore
 @Api(tags = "工具：代码生成配置")
 @RequiredArgsConstructor
 @RestController

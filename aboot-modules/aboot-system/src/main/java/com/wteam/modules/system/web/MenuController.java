@@ -23,6 +23,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -36,6 +37,7 @@ import java.util.List;
  */
 @SuppressWarnings({"rawtypes"})
 @RequiredArgsConstructor
+@ApiIgnore
 @Api(value="菜单Controller",tags={"系统：菜单操作"})
 @RestController
 @RequestMapping("api/menu")

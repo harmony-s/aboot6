@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -29,6 +30,7 @@ import java.io.IOException;
  * @since 2019/07/08 11:33
  */
 @SuppressWarnings("rawtypes")
+@ApiIgnore
 @RequiredArgsConstructor
 @Api(tags="日志：日志操作接口")
 @RestController

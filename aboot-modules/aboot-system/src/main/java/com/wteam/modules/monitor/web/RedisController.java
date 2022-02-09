@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 
 /**
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RequiredArgsConstructor
 @SuppressWarnings("rawtypes")
+@ApiIgnore
 @Api(tags="监控：缓存操作接口")
 @RestController
 @RequestMapping("api/redis")

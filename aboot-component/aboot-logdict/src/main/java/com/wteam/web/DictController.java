@@ -22,6 +22,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -32,6 +33,7 @@ import java.io.IOException;
  * @since 2019/07/14 8:39
  */
 @SuppressWarnings("rawtypes")
+@ApiIgnore
 @Api(value="字典Controller",tags={"系统：字典操作"})
 @RestController
 @RequestMapping("api/dict")

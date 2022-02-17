@@ -13,10 +13,7 @@ import com.wteam.modules.system.repository.DeptRepository;
 import com.wteam.modules.system.repository.RoleRepository;
 import com.wteam.modules.system.repository.UserRepository;
 import com.wteam.modules.system.service.DeptService;
-import com.wteam.utils.FileUtil;
-import com.wteam.utils.QueryHelper;
-import com.wteam.utils.RedisUtils;
-import com.wteam.utils.ValidUtil;
+import com.wteam.utils.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
@@ -194,7 +191,7 @@ public class DeptServiceImpl  implements DeptService {
             map.put("创建日期", deptDTO.getCreatedAt());
             list.add(map);
         }
-        FileUtil.downloadExcel(list, response);
+        ExcelUtil.downloadExcel(list, response);
 
     }
 

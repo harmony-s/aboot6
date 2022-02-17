@@ -126,6 +126,6 @@ public class JobServiceImpl implements JobService {
             map.put("创建日期", job.getCreatedAt());
             list.add(map);
         }
-        FileUtil.downloadExcel(list, response);
+        ExcelUtil.downloadExcel(list, response);
     }
 }

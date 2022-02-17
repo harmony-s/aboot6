@@ -252,7 +252,7 @@ public class UserServiceImpl implements UserService {
             map.put("创建日期", userDTO.getCreatedAt());
             list.add(map);
         }
-        FileUtil.downloadExcel(list, response);
+        ExcelUtil.downloadExcel(list, response);
     }
 
     @Override

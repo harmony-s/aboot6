@@ -117,7 +117,7 @@ public class GroupDataServiceImpl implements GroupDataService {
             map.put("创建时间", groupData.getCreatedAt());
             list.add(map);
         }
-        FileUtil.downloadExcel(list, response);
+        ExcelUtil.downloadExcel(list, response);
     }
 
     @Override

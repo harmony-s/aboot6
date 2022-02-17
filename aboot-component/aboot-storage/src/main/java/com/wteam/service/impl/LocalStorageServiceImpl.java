@@ -179,7 +179,7 @@ public class LocalStorageServiceImpl implements LocalStorageService {
             map.put("创建日期", localStorageDTO.getCreatedAt());
             list.add(map);
         }
-        FileUtil.downloadExcel(list, response);
+        ExcelUtil.downloadExcel(list, response);
     }
 
 }

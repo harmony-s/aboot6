@@ -10,18 +10,14 @@
 package com.wteam.utils;
 
 import cn.hutool.core.codec.Base64;
-import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.IdUtil;
 import com.wteam.exception.BadRequestException;
+import com.wteam.utils.enums.FileType;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.util.IOUtils;
-import org.apache.poi.xssf.usermodel.*;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.activation.MimetypesFileTypeMap;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -29,15 +25,13 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static com.wteam.utils.PathUtil.basePath;
 
 /**
  * File工具类，扩展 hutool 工具包
+ *
  * @author mission
  * @since 2020-12-27
  */
@@ -114,10 +108,11 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
         if ((filename != null) && (filename.length() > 0)) {
             int dot = filename.lastIndexOf('.');
             if ((dot > -1) && (dot < (filename.length()))) {
-                filename=filename
+                filename = filename
                         .substring(0, dot)
-                        .replaceAll("\\.","");
-                return filename.length()>20?filename.substring(0,20):filename;
+                        .replaceAll("\\.", "")
+                        .replaceAll(" ", "");
+                return filename.length() > 20 ? filename.substring(0, 20) : filename;
             }
         }
         return filename;
@@ -187,7 +182,7 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
             file.transferTo(dest);
             return dest;
         } catch (Exception e) {
-            log.error("[上传失败]"+e.getMessage(), e);
+            log.error("[上传失败]" + e.getMessage(), e);
         }
         return null;
     }
@@ -197,196 +192,12 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
      */
     public static String fileToBase64(File file) throws Exception {
         FileInputStream inputFile = new FileInputStream(file);
-        String base64 =null;
-        byte[] buffer = new byte[(int)file.length()];
+        String base64 = null;
+        byte[] buffer = new byte[(int) file.length()];
         inputFile.read(buffer);
         inputFile.close();
-        base64= Base64.encode(buffer);
+        base64 = Base64.encode(buffer);
         return base64.replaceAll("[\\s*\t\n\r]", "");
-    }
-
-
-    /**
-     * 导出excel
-     */
-    public static void downloadExcel(List<Map<String, Object>> list, HttpServletResponse response) throws IOException {
-        // 声明一个工作薄
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        // 生成一个表格
-        XSSFSheet sheet = workbook.createSheet();
-        //冻结表头
-        sheet.createFreezePane(0, 1, 0, 1 );
-        //创建单元格样式对象
-        XSSFCellStyle cellStyle = workbook.createCellStyle();
-        //添加常用样式
-        cellStyle.setWrapText(true);//设置自动换行
-        //设置单元格背景色
-        cellStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        cellStyle.setBorderBottom(BorderStyle.THIN);
-        cellStyle.setBorderLeft(BorderStyle.THIN);
-        cellStyle.setBorderRight(BorderStyle.THIN);
-        cellStyle.setBorderTop(BorderStyle.THIN);
-        cellStyle.setAlignment(HorizontalAlignment.CENTER);
-        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-
-        write2Sheet(sheet, list, cellStyle,0, 0, null);
-        //response为HttpServletResponse对象
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
-        //file.xls是弹出下载对话框的文件名，不能为中文，中文请自行编码
-        response.setHeader("Content-Disposition","attachment;filename=file.xlsx");
-        ServletOutputStream out=response.getOutputStream();
-        // 终止后删除临时文件
-        workbook.write(out);
-        //此处记得关闭输出Servlet流
-        workbook.close();
-        IoUtil.close(out);
-    }
-
-    public static void write2Sheet(XSSFSheet sheet,
-                                   List<Map<String, Object>> list,
-                                   XSSFCellStyle titleCellStyle,
-                                   int firstRow,
-                                   int firstColumn,
-                                   String pattern) {
-        if (CollectionUtils.isEmpty(list)) {
-            return;
-        }
-        //时间格式默认"yyyy-MM-dd"
-        if (StringUtils.isEmpty(pattern)){
-            pattern = "yyyy-MM-dd HH:mm:ss";
-        }
-        // 产生表格标题行
-        XSSFRow row = sheet.getRow(firstRow);
-        if (row == null) {
-            row = sheet.createRow(firstRow);
-        }
-        Set<String> keys = list.get(0).keySet();
-        Iterator<String> it1 = keys.iterator();
-        int c = firstColumn;   //标题列数
-        while (it1.hasNext()){
-            XSSFCell cell = row.createCell(c);
-            XSSFRichTextString text = new XSSFRichTextString(it1.next());
-            cell.setCellStyle(titleCellStyle);
-            cell.setCellValue(text);
-            c++;
-        }
-        // 遍历集合数据，产生数据行
-        Iterator<Map<String, Object>> it = list.iterator();
-        int index = firstRow;
-        while (it.hasNext()) {
-            index++;
-            row = sheet.getRow(index);
-            if (row == null) {
-                row = sheet.createRow(index);
-            }
-            Map<String, Object> map = it.next();
-            try {
-                int cellNum = firstColumn;
-                //遍历列名
-                for (String key : keys) {
-
-                    if (!keys.contains(key)) {
-                        log.error("Map 中 不存在 key [" + key + "]");
-                        continue;
-                    }
-                    Object value = map.get(key);
-                    XSSFCell cell = row.createCell(cellNum);
-                    String textValue = null;
-                    if (value instanceof Integer) {
-                        int intValue = (Integer) value;
-                        cell.setCellValue(intValue);
-                    } else if (value instanceof Float) {
-                        float fValue = (Float) value;
-                        cell.setCellValue(fValue);
-                    } else if (value instanceof Double) {
-                        double dValue = (Double) value;
-                        cell.setCellValue(dValue);
-                    } else if (value instanceof Long) {
-                        long longValue = (Long) value;
-                        cell.setCellValue(longValue);
-                    } else if (value instanceof Boolean) {
-                        boolean bValue = (Boolean) value;
-                        cell.setCellValue(bValue);
-                    } else if (value instanceof Date) {
-                        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-                        textValue = sdf.format(value);
-                    }else if (value instanceof LocalDateTime){
-                        LocalDateTime ldValue = (LocalDateTime) value;
-                        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                        textValue =ldValue.format(dtf);
-                    }else if (value instanceof LocalDate){
-                        LocalDate ldValue = (LocalDate) value;
-                        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                        textValue =ldValue.format(dtf);
-                    }else if (value instanceof String[]) {
-                        String[] strArr = (String[]) value;
-                        for (int j = 0; j < strArr.length; j++) {
-                            String str = strArr[j];
-                            cell.setCellValue(str);
-                            if (j != strArr.length - 1) {
-                                cellNum++;
-                                cell = row.createCell(cellNum);
-                            }
-                        }
-                    } else if (value instanceof Double[]) {
-                        Double[] douArr = (Double[]) value;
-                        for (int j = 0; j < douArr.length; j++) {
-                            Double val = douArr[j];
-                            // 值不为空则set Value
-                            if (val != null) {
-                                cell.setCellValue(val);
-                            }
-
-                            if (j != douArr.length - 1) {
-                                cellNum++;
-                                cell = row.createCell(cellNum);
-                            }
-                        }
-                    } else {
-                        // 其它数据类型都当作字符串简单处理
-                        textValue = value == null ? StringUtils.EMPTY : value.toString();
-                    }
-                    if (textValue != null) {
-                        XSSFRichTextString richString = new XSSFRichTextString(textValue);
-                        cell.setCellValue(richString);
-                    }
-                    cellNum++;
-                }
-            } catch (Exception e) {
-                log.error(e.toString(), e);
-            }
-        }
-        // 设定自动宽度
-        setSizeColumn(sheet, firstRow, keys.size());
-    }
-
-    /**
-     * 自适应宽度(中文支持)
-     */
-    private static void setSizeColumn(XSSFSheet sheet, int firstRow, int rowsSize) {
-        for (int columnNum = 0; columnNum <= rowsSize; columnNum++) {
-            int columnWidth = sheet.getColumnWidth(columnNum) / 256;
-            for (int rowNum = firstRow; rowNum < sheet.getLastRowNum(); rowNum++) {
-                XSSFRow currentRow;
-                //当前行未被使用过
-                if (sheet.getRow(rowNum) == null) {
-                    currentRow = sheet.createRow(rowNum);
-                } else {
-                    currentRow = sheet.getRow(rowNum);
-                }
-                if (currentRow.getCell(columnNum) != null) {
-                    XSSFCell currentCell = currentRow.getCell(columnNum);
-                    if (currentCell.getCellTypeEnum().equals(CellType.STRING)) {
-                        int length = currentCell.getStringCellValue().getBytes().length;
-                        if (columnWidth < length) {
-                            columnWidth = length;
-                        }
-                    }
-                }
-            }
-            sheet.setColumnWidth(columnNum, columnWidth < 100 ? columnWidth * 256 : 100 * 256);
-        }
     }
 
     /**
@@ -448,7 +259,7 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
     private static byte[] getByte(File file) {
         // 得到文件长度
         byte[] b = new byte[(int) file.length()];
-        try(InputStream in = new FileInputStream(file)) {
+        try (InputStream in = new FileInputStream(file)) {
 
             System.out.println(in.read(b));
         } catch (IOException e) {
@@ -461,7 +272,7 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
     private static byte[] getByte(MultipartFile multipartFile) {
         // 得到文件长度
         byte[] b = new byte[4096];
-        try(InputStream in = multipartFile.getInputStream()){
+        try (InputStream in = multipartFile.getInputStream()) {
             MessageDigest md5 = MessageDigest.getInstance("MD5");
             int len = 0;
             while ((len = in.read(b)) != -1) {
@@ -514,7 +325,7 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
             IOUtils.copy(fis, response.getOutputStream());
             response.flushBuffer();
         } catch (Exception e) {
-            log.error("[下载失败]"+e.getMessage(), e);
+            log.error("[下载失败]" + e.getMessage(), e);
         } finally {
             if (fis != null) {
                 try {
@@ -523,7 +334,7 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
                         file.deleteOnExit();
                     }
                 } catch (IOException e) {
-                    log.error("[下载时,关闭IO流异常]"+e.getMessage(), e);
+                    log.error("[下载时,关闭IO流异常]" + e.getMessage(), e);
                 }
             }
         }
@@ -536,12 +347,12 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
 
     /**
      * 保存文件及获取文件MD5值和SHA1值
+     *
      * @param multipartFile MultipartFile对象
      */
-    public static String  getMd5(MultipartFile multipartFile){
+    public static String getMd5(MultipartFile multipartFile) {
         return getMd5(getByte(multipartFile));
     }
-
 
 
     /**
@@ -554,14 +365,16 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
             }
         }
     }
+
     /**
      * 如果需要
      * 创建目标路径,调用此方法
+     *
      * @param storePath 相对路径
      */
     public static void makeDirPath(String storePath) {
-        String realFileParentPath= basePath().concat(storePath);
-        File dirPath=new File(realFileParentPath);
+        String realFileParentPath = basePath().concat(storePath);
+        File dirPath = new File(realFileParentPath);
         if (!dirPath.exists()) {
             dirPath.mkdirs();
         }
@@ -572,10 +385,11 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
      * storePath是文件的路径还是目录的路径
      * 如果是storePath是文件路径则删除该文件,
      * 如果是storePath是目录路径则删除该目录下的所有文件
+     *
      * @param storePath 相对路径
      */
-    public static void deleteFileOrPath(String storePath){
-        String absolutePath= basePath()+storePath;
+    public static void deleteFileOrPath(String storePath) {
+        String absolutePath = basePath() + storePath;
         deleteFileOrPathByAbsolute(absolutePath);
     }
 
@@ -584,23 +398,101 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
      * absolutePath是文件的路径还是目录的路径
      * 如果是absolutePath是文件路径则删除该文件,
      * 如果是absolutePath是目录路径则删除该目录下的所有文件
+     *
      * @param absolutePath 绝对路径
      */
-    public static void deleteFileOrPathByAbsolute(String absolutePath){
-        File fileOrPath =new File(absolutePath);
-        if (fileOrPath.exists()){
+    public static void deleteFileOrPathByAbsolute(String absolutePath) {
+        File fileOrPath = new File(absolutePath);
+        if (fileOrPath.exists()) {
             if (fileOrPath.isDirectory()) {
                 try {
                     File[] files = fileOrPath.listFiles();
                     for (int i = 0; i < (files != null ? files.length : 0); i++) {
-                        files[i].deleteOnExit();
+                        deleteFileOrPathByAbsolute(files[i].getAbsolutePath());
                     }
                 } catch (IOError e) {
-                    log.error("[文件删除失败]"+e.getMessage(),e);
+                    log.error("[文件删除失败]" + e.getMessage(), e);
                 }
             }
-            fileOrPath.deleteOnExit();
+            fileOrPath.delete();
         }
     }
 
+    /**
+     * 转换成16进制字符串
+     *
+     * @param src 原生byte
+     * @return 16进制字符串
+     */
+    private static String bytesToHexString(byte[] src) {
+
+        StringBuilder stringBuilder = new StringBuilder();
+        if (src == null || src.length <= 0) {
+            return null;
+        }
+        for (int i = 0; i < src.length; i++) {
+            int v = src[i] & 0xFF;
+            String hv = Integer.toHexString(v);
+            if (hv.length() < 2) {
+                stringBuilder.append(0);
+            }
+            stringBuilder.append(hv);
+        }
+        return stringBuilder.toString();
+    }
+
+    /**
+     * 得到文件头
+     *
+     * @param is 文件路径
+     * @return 文件头
+     * @throws IOException /
+     */
+    private static String getFileContent(InputStream is) throws IOException {
+
+        byte[] b = new byte[28];
+
+        InputStream inputStream = null;
+
+        try {
+            is.read(b, 0, 28);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    throw e;
+                }
+            }
+        }
+        return bytesToHexString(b);
+    }
+
+    /**
+     * 获得文件类型
+     *
+     * @param is 文件
+     * @return 文件类型
+     */
+    public static FileType getFileType(InputStream is) throws IOException {
+
+        String fileHead = getFileContent(is);
+        if (fileHead == null || fileHead.length() == 0) {
+            return null;
+        }
+        fileHead = fileHead.toUpperCase();
+        FileType[] fileTypes = FileType.values();
+
+        for (FileType type : fileTypes) {
+            if (fileHead.startsWith(type.getValue())) {
+                return type;
+            }
+        }
+
+        return null;
+    }
 }

@@ -24,6 +24,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -35,6 +36,7 @@ import java.util.List;
  * @since 2019/07/13 11:24
  */
 @SuppressWarnings({"rawtypes"})
+@ApiIgnore
 @Api(value="部门Controller",tags={"系统：部门操作"})
 @RequiredArgsConstructor
 @RestController

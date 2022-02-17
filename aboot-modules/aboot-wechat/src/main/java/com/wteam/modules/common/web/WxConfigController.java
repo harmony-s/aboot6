@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -31,6 +32,7 @@ import java.io.IOException;
 * @since 2020-02-06
 */
 @SuppressWarnings("rawtypes")
+@ApiIgnore
 @Api(value="微信配置Controller",tags={"微信: 配置操作"})
 @RestController
 @RequiredArgsConstructor

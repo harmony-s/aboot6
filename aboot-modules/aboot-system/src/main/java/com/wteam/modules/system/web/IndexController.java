@@ -12,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -19,6 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author mission
  * @since 2020/01/18 20:20
  */
+@ApiIgnore
 @Api(value="主页Controller",tags={"系统：系统主页"})
 @RestController
 public class IndexController {

@@ -24,6 +24,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 
 /**
@@ -32,6 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 * @since 2019-10-15
 */
 @SuppressWarnings({"rawtypes"})
+@ApiIgnore
 @Api(value="前端配置Controller",tags={"工具：前端配置操作接口"})
 @RestController
 @RequiredArgsConstructor

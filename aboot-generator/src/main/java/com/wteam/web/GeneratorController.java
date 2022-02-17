@@ -20,6 +20,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +30,7 @@ import java.util.List;
  * @author mission
  * @since 2019/09/10 9:12
  */
+@ApiIgnore
 @Api(tags = "工具：代码生成器")
 @RequiredArgsConstructor
 @RestController

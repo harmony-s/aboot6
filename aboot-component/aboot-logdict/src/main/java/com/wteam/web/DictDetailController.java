@@ -24,6 +24,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +35,7 @@ import java.util.Map;
  * @since 2019/07/13 19:05
  */
 @SuppressWarnings({"rawtypes"})
+@ApiIgnore
 @RequiredArgsConstructor
 @Api(value="字典详情Controller",tags={"系统：字典详情操作"})
 @RestController

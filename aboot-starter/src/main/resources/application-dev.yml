@@ -14,7 +14,7 @@ spring:
       max-request-size: 1024MB
   datasource:
     ## 配置数据源
-    url: jdbc:log4jdbc:mysql://127.0.0.1:3306/aboot5_beta?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:log4jdbc:mysql://127.0.0.1:3306/aboot6_beta?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: root
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy

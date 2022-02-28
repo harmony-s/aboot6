@@ -14,6 +14,7 @@ import java.util.Set;
 
 /**
  * 角色 持久类
+ *
  * @author mission
  * @since 2019/07/08 16:20
  */
@@ -31,6 +32,7 @@ public class Role extends BaseEntity {
     @NotNull(groups = Update.class)
     @Column(name = "id")
     private Long id;
+
     /**
      * 角色名
      */
@@ -44,13 +46,17 @@ public class Role extends BaseEntity {
     @Column
     private String authority;
 
-    // 数据权限类型 全部 、 本级 、 自定义
+    /**
+     * 数据权限类型 全部 、 本级 、 自定义
+     */
     @Column(nullable = false)
-    private String dataScope="本级";
+    private String dataScope = "本级";
 
-    //数值越小,级别越大
+    /**
+     * 数值越小,级别越大
+     */
     @Column
-    private Integer level=3;
+    private Integer level = 3;
 
     /**
      * 备注
@@ -70,8 +76,8 @@ public class Role extends BaseEntity {
      */
     @ManyToMany
     @JoinTable(name = "sys_roles_permissions_map",
-        joinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "id")},
-        inverseJoinColumns = {@JoinColumn(name = "permission_id",referencedColumnName = "id")})
+            joinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "permission_id", referencedColumnName = "id")})
     private Set<Permission> permissions;
 
     /**
@@ -79,18 +85,9 @@ public class Role extends BaseEntity {
      */
     @ManyToMany
     @JoinTable(name = "sys_roles_menus_map",
-        joinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "id")},
-        inverseJoinColumns = {@JoinColumn(name = "menu_id",referencedColumnName = "id")})
+            joinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "menu_id", referencedColumnName = "id")})
     private Set<Menu> menus;
-
-    /**
-     * 管理部门
-     */
-    @ManyToMany
-    @JoinTable(name = "sys_roles_depts_map",
-        joinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "id")},
-        inverseJoinColumns = {@JoinColumn(name = "dept_id",referencedColumnName = "id")})
-    private Set<Dept> depts;
 
     public Role() {
     }

@@ -41,22 +41,24 @@ import java.util.Map;
 
 /**
  * 授权、根据token获取用户详细信息
+ *
  * @author mission
  * @since 2019/07/11 20:14
  */
 @SuppressWarnings("rawtypes")
-@Api(tags={"系统：授权操作"})
+@Api(tags = {"系统：授权操作"})
 @Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/auth")
 public class AuthController {
 
-
     @Value("${jwt.code-key}")
     private String codeKey;
+
     @Value("${rsa.private-key}")
     private String privateKey;
+
     @Value("${jwt.single-login}")
     private Boolean singleLogin;
 
@@ -68,17 +70,16 @@ public class AuthController {
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-
-
     /**
      * 登录授权
+     *
      * @param loginUser /
      * @return /
      */
     @ApiOperation(value = "用户登录")
     @Log("用户登录")
     @AnonymousPostMapping(value = "login")
-    public R login(@Validated @RequestBody LoginUser loginUser, HttpServletRequest request){
+    public R login(@Validated @RequestBody LoginUser loginUser, HttpServletRequest request) {
         // 查询验证码
         String code = redisService.getCodeVal(loginUser.getUuid());
         // 清除验证码
@@ -95,11 +96,16 @@ public class AuthController {
         RSA rsa = new RSA(privateKey, null);
         String password = new String(rsa.decrypt(loginUser.getPassword(), KeyType.PrivateKey));
         //登录
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser.getUsername().trim(), password);
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        //获取jwt
-        final JwtUser jwtUser = (JwtUser) authentication.getPrincipal();
+        JwtUser jwtUser;
+        try {
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser.getUsername().trim(), password);
+            Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            //获取jwt
+            jwtUser = (JwtUser) authentication.getPrincipal();
+        } catch (Exception e) {
+            throw new BadRequestException("帐号或密码错误!");
+        }
         // 是否冻结
         if (!jwtUser.isEnabled()) {
             throw new BadRequestException("该账户已被冻结,请联系管理员");
@@ -109,14 +115,14 @@ public class AuthController {
 
         // 保存在线信息
         onlineUserService.save(jwtUser, token, request);
-        if(singleLogin){
+        if (singleLogin) {
             //踢掉之前已经登录的token
-            onlineUserService.checkLoginOnUser(loginUser.getUsername(),token);
+            onlineUserService.checkLoginOnUser(loginUser.getUsername(), token);
         }
 
         // 返回 token 与 用户信息
         Map<String, Object> authInfo = new HashMap<String, Object>(2) {{
-            put("token",token);
+            put("token", token);
             put("user", jwtUser);
         }};
         return R.ok(authInfo);
@@ -124,14 +130,14 @@ public class AuthController {
 
     /**
      * 获取用户信息
+     *
      * @return /
      */
     @ApiOperation(value = "获取用户信息")
     @GetMapping(value = "info")
-    public R getUserInfo(){
+    public R getUserInfo() {
         return R.ok(SecurityUtils.getUserDetails());
     }
-
 
     /**
      * 获取验证码
@@ -142,7 +148,7 @@ public class AuthController {
         CaptchaUtil.Validate v = CaptchaUtil.getRandomCode();
         String result = v.getValue();
         String uuid = codeKey + IdUtil.simpleUUID();
-        redisService.saveCode(uuid,result);
+        redisService.saveCode(uuid, result);
         // 返回验证码信息
         return new HashMap<String, String>(2) {{
             put("img", v.getBase64Str());
@@ -153,14 +159,14 @@ public class AuthController {
     @Log(value = "用户退出")
     @ApiOperation("用户退出")
     @PostMapping(value = "logout")
-    public R logout(HttpServletRequest request){
-       onlineUserService.logout(jwtTokenUtil.getToken(request));
-       return R.ok();
+    public R logout(HttpServletRequest request) {
+        onlineUserService.logout(jwtTokenUtil.getToken(request));
+        return R.ok();
     }
 
     @ApiOperation(value = "测试使用")
     @AnonymousGetMapping(value = "admin")
-    public R login(HttpServletRequest request){
+    public R login(HttpServletRequest request) {
         //登录
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("admin", "123456");
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
@@ -174,12 +180,12 @@ public class AuthController {
 
         // 保存在线信息
         onlineUserService.save(jwtUser, token, request);
-        if(singleLogin){
+        if (singleLogin) {
             //踢掉之前已经登录的token
-            onlineUserService.checkLoginOnUser("admin",token);
+            onlineUserService.checkLoginOnUser("admin", token);
         }
         Map<String, Object> authInfo = new HashMap<String, Object>(2) {{
-            put("token",token);
+            put("token", token);
             put("user", jwtUser);
         }};
         return R.ok(authInfo);

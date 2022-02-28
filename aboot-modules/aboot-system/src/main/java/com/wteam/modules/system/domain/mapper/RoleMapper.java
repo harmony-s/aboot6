@@ -10,7 +10,7 @@ import org.mapstruct.ReportingPolicy;
  * @author mission
  * @since 2019/07/08 20:07
  */
-@Mapper(componentModel = "spring", uses = {PermissionMapper.class, MenuMapper.class, DeptMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", uses = {PermissionMapper.class, MenuMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface RoleMapper extends BaseMapper<RoleDTO, Role> {
 
 }

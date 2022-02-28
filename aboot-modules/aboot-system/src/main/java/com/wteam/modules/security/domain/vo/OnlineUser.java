@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 
 /**
  * 在线用户
+ *
  * @author mission
  * @since 2019/11/02 16:31
  */
@@ -24,31 +25,27 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class OnlineUser implements Serializable {
 
-  //登录名
-  private String username;
+    //登录名
+    private String username;
 
+    //用户昵称
+    private String nickname;
 
-  //用户昵称
-  private String nickname;
+    //登录浏览器
+    private String browser;
 
-  //登录部门
-  private String job;
+    //登录系统
+    private String os;
 
-  //登录浏览器
-  private String browser;
+    //登录ip
+    private String ip;
 
-  //登录系统
-  private String os;
+    //登录地址
+    private String address;
 
-  //登录ip
-  private String ip;
+    //加密token
+    private String key;
 
-  //登录地址
-  private String address;
-
-  //加密token
-  private String key;
-
-  //登录时间
-  private Timestamp loginTime;
+    //登录时间
+    private Timestamp loginTime;
 }

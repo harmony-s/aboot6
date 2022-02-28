@@ -21,7 +21,6 @@ import com.wteam.utils.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +34,7 @@ import java.util.stream.Collectors;
 
 /**
  * 用户 业务实现层
+ *
  * @author mission
  * @since 2019/07/09 15:42
  */
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
     @Cacheable(key = "'id:' + #p0")
     public UserDTO findDTOById(long id) {
         User user = userRepository.findById(id).orElse(null);
-        ValidUtil.notNull(user,User.ENTITY_NAME,"id",id);
+        ValidUtil.notNull(user, User.ENTITY_NAME, "id", id);
         return userMapper.toDto(user);
     }
 
@@ -69,15 +69,11 @@ public class UserServiceImpl implements UserService {
     @Transactional(rollbackFor = Exception.class)
     public UserDTO create(User resources) {
         //账号校验
-        if (userRepository.findByUsername(resources.getUsername())!=null) {
-            throw new EntityExistException(User.ENTITY_NAME,"username",resources.getUsername());
-        }
-        //邮箱校验
-        if (StringUtils.isNotBlank(resources.getEmail())&&userRepository.findByEmail(resources.getEmail())!=null) {
-            throw new EntityExistException("邮箱","email",resources.getEmail());
+        if (userRepository.findByUsername(resources.getUsername()) != null) {
+            throw new EntityExistException(User.ENTITY_NAME, "username", resources.getUsername());
         }
         //默认激活
-        if (resources.getEnabled()==null) {
+        if (resources.getEnabled() == null) {
             resources.setEnabled(true);
         }
 
@@ -88,38 +84,33 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void update(User resources) {
-        User user=userRepository.findById(resources.getId()).orElse(null);
-        ValidUtil.notNull(user,User.ENTITY_NAME,"id",resources.getId());
+        User user = userRepository.findById(resources.getId()).orElse(null);
+        ValidUtil.notNull(user, User.ENTITY_NAME, "id", resources.getId());
+
+        if (user.getId() == 1L) {
+            throw new BadRequestException("无法修改初始帐号!");
+        }
 
         //账号校验
         if (StringUtils.isNotBlank(resources.getUsername())) {
-            User user1=userRepository.findByUsername(resources.getUsername());
-            if (user1 !=null && !user.getId().equals(user1.getId())) {
-                throw new EntityExistException(User.ENTITY_NAME,"username",resources.getUsername());
-            }
-        }
-
-        //邮箱校验
-        if (StringUtils.isNotBlank(resources.getEmail())) {
-            User user2 = userRepository.findByEmail(resources.getEmail());
-            if (user2 != null && !user.getId().equals(user2.getId())) {
-                throw new EntityExistException("邮箱", "email", resources.getEmail());
+            User user1 = userRepository.findByUsername(resources.getUsername());
+            if (user1 != null && !user.getId().equals(user1.getId())) {
+                throw new EntityExistException(User.ENTITY_NAME, "username", resources.getUsername());
             }
         }
 
         // 清理缓存
         delCaches(user.getId(), user.getUsername());
         //如果用户的角色改变了, 需要手动清理下缓存
-        if (resources.getRoles()!=null&&!resources.getRoles().equals(user.getRoles())) {
+        if (resources.getRoles() != null && !resources.getRoles().equals(user.getRoles())) {
             redisUtils.del(CacheKey.DATA_USER + resources.getId());
             redisUtils.del(CacheKey.ROLE_USER + resources.getId());
             redisUtils.del(CacheKey.MENU_USER + resources.getId());
             redisUtils.del(CacheKey.PERMISSION_USER + resources.getId());
         }
 
-
         // 如果用户被禁用，则清除用户登录信息
-        if(resources.getEnabled()!=null&&!resources.getEnabled()){
+        if (resources.getEnabled() != null && !resources.getEnabled()) {
             onlineUserService.kickOutForUsername(resources.getUsername());
         }
         User updateUser = new User();
@@ -129,12 +120,9 @@ public class UserServiceImpl implements UserService {
         updateUser.setAvatar(resources.getAvatar());
         updateUser.setEnabled(resources.getEnabled());
         updateUser.setRoles(resources.getRoles());
-        updateUser.setDept(resources.getDept());
-        updateUser.setJob(resources.getJob());
         updateUser.setPhone(resources.getPhone());
         updateUser.setSex(resources.getSex());
         userRepository.save(updateUser);
-
     }
 
 
@@ -153,13 +141,15 @@ public class UserServiceImpl implements UserService {
         updateUser.setPhone(resources.getPhone());
         updateUser.setSex(resources.getSex());
         userRepository.save(updateUser);
-
-
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void delete(Set<Long> ids) {
+        if (ids.contains(1L)) {
+            throw new BadRequestException("无法删除初始帐号!");
+        }
+
         Set<Long> uids = new HashSet<>();
         for (Long id : ids) {
             // 清理缓存
@@ -176,16 +166,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO findByName(String userName) {
-        User user= null;
-        if (ValidUtil.isEmail(userName)) {
-            user=userRepository.findByEmail(userName);
-        }else {
-            user =userRepository.findByUsername(userName);
-        }
+        User user = userRepository.findByUsername(userName);
 
-        if (user == null){
-            throw  new EntityNotFoundException(User.ENTITY_NAME,"name",userName);
-        }else {
+        if (user == null) {
+            throw new EntityNotFoundException(User.ENTITY_NAME, "name", userName);
+        } else {
             return userMapper.toDto(user);
         }
 
@@ -194,42 +179,27 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updatePass(String username, String pass) {
-
         flushCache(username);
-        userRepository.updatePass(username,pass, Timestamp.valueOf(LocalDateTime.now()));
-
+        userRepository.updatePass(username, pass, Timestamp.valueOf(LocalDateTime.now()));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateAvatar(String username, String url) {
-
         flushCache(username);
-        userRepository.updateAvatar(username,url);
-
+        userRepository.updateAvatar(username, url);
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void updateEmail(String username, String email) {
-        if (userRepository.findByEmail(email)!=null) {
-            throw new BadRequestException("该邮箱已经被注册");
-        }
-        flushCache(username);
-        userRepository.updateEmail(username,email);
-
-    }
-
-    @Override
-    public Map<String, Object> queryAll(UserQueryCriteria criteria, Pageable pageable){
+    public Map<String, Object> queryAll(UserQueryCriteria criteria, Pageable pageable) {
         return PageUtil.toPage(userRepository.findAll((root, cq, cb) ->
-            QueryHelper.andPredicate(root, criteria, cb),pageable)
-        .map(userMapper::toDto));
+                QueryHelper.andPredicate(root, criteria, cb), pageable)
+                .map(userMapper::toDto));
     }
 
     @Override
     public List<UserDTO> queryAll(UserQueryCriteria criteria) {
-        List<User> users = userRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelper.andPredicate(root,criteria,criteriaBuilder));
+        List<User> users = userRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelper.andPredicate(root, criteria, criteriaBuilder));
         return userMapper.toDto(users);
     }
 
@@ -238,7 +208,7 @@ public class UserServiceImpl implements UserService {
         List<Map<String, Object>> list = new ArrayList<>();
         for (UserDTO userDTO : queryAll) {
             List<String> roles = userDTO.getRoles().stream().map(RoleSmallDTO::getName).collect(Collectors.toList());
-            Map<String,Object> map = new LinkedHashMap<>();
+            Map<String, Object> map = new LinkedHashMap<>();
             map.put("用户名", userDTO.getUsername());
             map.put("昵称", userDTO.getNickname());
             map.put("头像", userDTO.getAvatar());
@@ -246,8 +216,6 @@ public class UserServiceImpl implements UserService {
             map.put("状态", userDTO.getEnabled() ? "启用" : "禁用");
             map.put("手机号码", userDTO.getPhone());
             map.put("角色", roles);
-            map.put("部门", userDTO.getDept().getName());
-            map.put("岗位", userDTO.getJob().getName());
             map.put("最后修改密码的时间", userDTO.getLastPasswordResetTime());
             map.put("创建日期", userDTO.getCreatedAt());
             list.add(map);
@@ -260,7 +228,6 @@ public class UserServiceImpl implements UserService {
     public void updateLoginTime(JwtUser jwtUser) {
         userRepository.updateLoginTime(jwtUser.getUsername(), Timestamp.valueOf(LocalDateTime.now()));
     }
-
 
     /**
      * 清理缓存

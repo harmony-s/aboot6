@@ -24,7 +24,7 @@ public class WxUserQueryCriteria{
     private String openid;
     /** 模糊 */
     @Query(type = Query.Type.INNER_LIKE)
-    private String nickname;
+    private String nickName;
     /** 精确 */
     @Query
     private Integer gender;

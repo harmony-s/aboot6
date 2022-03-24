@@ -19,10 +19,7 @@ import com.wteam.exception.EntityExistException;
 import com.wteam.repository.DictDetailRepository;
 import com.wteam.repository.DictRepository;
 import com.wteam.service.DictService;
-import com.wteam.utils.FileUtil;
-import com.wteam.utils.PageUtil;
-import com.wteam.utils.QueryHelper;
-import com.wteam.utils.ValidUtil;
+import com.wteam.utils.*;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -152,6 +149,6 @@ public class DictServiceImpl implements DictService {
                 list.add(map);
             }
         }
-        FileUtil.downloadExcel(list, response);
+        ExcelUtil.downloadExcel(list, response);
     }
 }

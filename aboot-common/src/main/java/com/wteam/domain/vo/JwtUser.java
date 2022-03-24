@@ -19,100 +19,92 @@ import java.util.stream.Collectors;
 
 /**
  * 当前登录用户
+ *
  * @author mission
  * @since 2020/07/24 14:51
  */
 @Getter
 public class JwtUser implements UserDetails {
 
-	private final Long id;
+    private final Long id;
 
-	private final String username;
+    private final String username;
 
-	private  String nickname;
+    private String nickname;
 
-	@JsonIgnore
-	private  String password;
+    @JsonIgnore
+    private String password;
 
-	private  Integer sex;
+    private Integer sex;
 
-	private  String avatar;
+    private String avatar;
 
-	private  String email;
+    private String email;
 
-	private  String phone;
+    private String phone;
 
-	private  Integer loginType;
+    private Integer loginType;
 
+    private boolean enabled;
 
-	private  boolean enabled;
+    @JsonIgnore
+    private Timestamp lastPasswordResetDate;
 
-	@JsonIgnore
-	private Timestamp lastPasswordResetDate;
+    @JsonIgnore
+    private final Collection<GrantedAuthority> authorities;
 
-	private  String dept;
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-	private  String job;
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-	@JsonIgnore
-	private final Collection<GrantedAuthority> authorities;
+    @JsonIgnore
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
+    @JsonIgnore
+    @Override
+    public String getPassword() {
+        return password;
+    }
 
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
 
-	@JsonIgnore
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
-
-	@JsonIgnore
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
-
-	@JsonIgnore
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
-
-	@JsonIgnore
-	@Override
-	public String getPassword() {
-		return password;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-	public Collection<?> getRoles() {
-		return authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
-	}
+    public Collection<?> getRoles() {
+        return authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
+    }
 
 
-	public JwtUser(Long id, String username, Collection<GrantedAuthority> authorities) {
-		this.id = id;
-		this.username = username;
-		this.authorities = authorities;
-	}
+    public JwtUser(Long id, String username, Collection<GrantedAuthority> authorities) {
+        this.id = id;
+        this.username = username;
+        this.authorities = authorities;
+    }
 
-	public JwtUser(Long id, String username, String nickname, String password, Integer sex, String avatar, String email, String phone, Integer loginType, boolean enabled, Timestamp lastPasswordResetDate, String dept, String job, Collection<GrantedAuthority> authorities) {
-		this.id = id;
-		this.username = username;
-		this.nickname = nickname;
-		this.password = password;
-		this.sex = sex;
-		this.avatar = avatar;
-		this.email = email;
-		this.phone = phone;
-		this.loginType = loginType;
-		this.enabled = enabled;
-		this.lastPasswordResetDate = lastPasswordResetDate;
-		this.dept = dept;
-		this.job = job;
-		this.authorities = authorities;
-	}
+    public JwtUser(Long id, String username, String nickname, String password, Integer sex, String avatar, String email, String phone, Integer loginType, boolean enabled, Timestamp lastPasswordResetDate, Collection<GrantedAuthority> authorities) {
+        this.id = id;
+        this.username = username;
+        this.nickname = nickname;
+        this.password = password;
+        this.sex = sex;
+        this.avatar = avatar;
+        this.email = email;
+        this.phone = phone;
+        this.loginType = loginType;
+        this.enabled = enabled;
+        this.lastPasswordResetDate = lastPasswordResetDate;
+        this.authorities = authorities;
+    }
 }

@@ -37,17 +37,11 @@ public class UserDTO implements Serializable {
 
     private Integer loginType;
 
-
     private Timestamp createdAt;
 
     private Timestamp lastPasswordResetTime;
 
     @ApiModelProperty(hidden = true)
     private Set<RoleSmallDTO> roles;
-
-    @ApiModelProperty(hidden = true)
-    private JobSmallDTO job;
-
-    private DeptSmallDTO dept;
 
 }

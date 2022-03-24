@@ -15,6 +15,7 @@ import java.util.Set;
 
 /**
  * 用户 业务层
+ *
  * @author mission
  * @since 2019/07/09 15:29
  */
@@ -22,6 +23,7 @@ public interface UserService {
 
     /**
      * get
+     *
      * @param id
      * @return
      */
@@ -29,6 +31,7 @@ public interface UserService {
 
     /**
      * create
+     *
      * @param resources
      * @return
      */
@@ -36,23 +39,28 @@ public interface UserService {
 
     /**
      * update
+     *
      * @param resources
      */
     void update(User resources);
 
     /**
      * 编辑个人中心
+     *
      * @param resources
      */
     void updateCenter(User resources);
+
     /**
      * delete
+     *
      * @param ids
      */
     void delete(Set<Long> ids);
 
     /**
      * findByName
+     *
      * @param userName
      * @return
      */
@@ -60,6 +68,7 @@ public interface UserService {
 
     /**
      * 修改密码
+     *
      * @param username
      * @param encryptPassword
      */
@@ -67,20 +76,15 @@ public interface UserService {
 
     /**
      * 修改头像
+     *
      * @param username
      * @param url
      */
     void updateAvatar(String username, String url);
 
     /**
-     * 修改邮箱
-     * @param username
-     * @param email
-     */
-    void updateEmail(String username, String email);
-
-    /**
      * 查看用户列表
+     *
      * @param criteria
      * @param pageable
      * @return
@@ -89,6 +93,7 @@ public interface UserService {
 
     /**
      * 查看用户列表
+     *
      * @param criteria
      * @return
      */
@@ -96,6 +101,7 @@ public interface UserService {
 
     /**
      * 导出用户列表
+     *
      * @param queryAll /
      * @param response /
      * @throws IOException /
@@ -104,10 +110,10 @@ public interface UserService {
 
     /**
      * 更新登录时间
+     *
      * @param jwtUser
      */
     void updateLoginTime(JwtUser jwtUser);
-
 
 
 }

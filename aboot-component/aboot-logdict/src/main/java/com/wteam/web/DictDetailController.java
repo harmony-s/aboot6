@@ -72,7 +72,7 @@ public class DictDetailController {
     @ApiOperation(value = "新增字典详情")
     @Log("新增字典详情")
     @PostMapping("add")
-    @PreAuthorize("@R.check('DEPT:all','DEPT:add')")
+    @PreAuthorize("@R.check('DICT:all','DICT:add')")
     public R create(@Validated @RequestBody DictDetail resources){
         Assert.isNull(resources.getId(),"实体ID应为空");
         return R.ok(dictDetailService.create(resources));

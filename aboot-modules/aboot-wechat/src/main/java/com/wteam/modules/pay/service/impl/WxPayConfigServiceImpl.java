@@ -9,10 +9,7 @@ import com.wteam.modules.pay.domain.dto.WxPayConfigDTO;
 import com.wteam.modules.pay.domain.mapper.WxPayConfigMapper;
 import com.wteam.modules.pay.repository.WxPayConfigRepository;
 import com.wteam.modules.pay.service.WxPayConfigService;
-import com.wteam.utils.FileUtil;
-import com.wteam.utils.PageUtil;
-import com.wteam.utils.QueryHelper;
-import com.wteam.utils.ValidUtil;
+import com.wteam.utils.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.util.Asserts;
 import org.springframework.data.domain.Page;
@@ -129,7 +126,7 @@ public class WxPayConfigServiceImpl implements WxPayConfigService {
             map.put("创建时间", wxPayConfig.getCreatedAt());
             list.add(map);
         }
-        FileUtil.downloadExcel(list, response);
+        ExcelUtil.downloadExcel(list, response);
     }
 
     @Override

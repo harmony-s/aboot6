@@ -22,10 +22,6 @@ public class UserQueryCriteria implements Serializable {
     @Query(propName = "loginType")
     private Integer userType;
 
-    @ApiModelProperty("部门编号, 数组类型, 无需传入")
-    @Query(propName = "id", type = Query.Type.IN, joinName = "dept")
-    private Set<Long> deptIds;
-
     @ApiModelProperty("用户名, 按用户名模糊查询")
     @Query(type = Query.Type.INNER_LIKE)
     private String username;
@@ -46,6 +42,4 @@ public class UserQueryCriteria implements Serializable {
     @Query
     private Boolean enabled;
 
-    @ApiModelProperty("部门编号, 按部门查询")
-    private Long deptId;
 }

@@ -15,10 +15,7 @@ import com.wteam.modules.system.repository.PermissionRepository;
 import com.wteam.modules.system.repository.UserRepository;
 import com.wteam.modules.system.service.PermissionService;
 import com.wteam.modules.system.service.RoleService;
-import com.wteam.utils.FileUtil;
-import com.wteam.utils.QueryHelper;
-import com.wteam.utils.RedisUtils;
-import com.wteam.utils.ValidUtil;
+import com.wteam.utils.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
@@ -198,7 +195,7 @@ public class PermissionServiceImpl implements PermissionService {
             map.put("创建日期", permissionDTO.getCreatedAt());
             list.add(map);
         }
-        FileUtil.downloadExcel(list, response);
+        ExcelUtil.downloadExcel(list, response);
     }
 
     /**

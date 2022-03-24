@@ -24,8 +24,6 @@ package com.wteam.modules.security.service;
 
 import com.wteam.domain.vo.JwtUser;
 import com.wteam.exception.BadRequestException;
-import com.wteam.modules.system.domain.dto.DeptSmallDTO;
-import com.wteam.modules.system.domain.dto.JobSmallDTO;
 import com.wteam.modules.system.domain.dto.UserDTO;
 import com.wteam.modules.system.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -55,28 +53,27 @@ public class JwtUserDetailsService implements UserDetailsService {
      */
     static Map<String, JwtUser> userDtoCache = new ConcurrentHashMap<>();
 
-
     @Override
     public UserDetails loadUserByUsername(String username) {
         JwtUser jwtUser = null;
         if (userDtoCache.containsKey(username)) {
             jwtUser = userDtoCache.get(username);
-        }else {
-            UserDTO user=userService.findByName(username);
-            if (user==null){
+        } else {
+            UserDTO user = userService.findByName(username);
+            if (user == null) {
                 throw new BadRequestException("账号不存在");
             }
             if (!user.getEnabled()) {
                 throw new BadRequestException("账号未激活！");
             }
-            jwtUser=createJwtUser(user);
+            jwtUser = createJwtUser(user);
 
             userDtoCache.put(username, jwtUser);
         }
         return jwtUser;
     }
 
-    public JwtUser createJwtUser(UserDTO user){
+    public JwtUser createJwtUser(UserDTO user) {
         return new JwtUser(
                 user.getId(),
                 user.getUsername(),
@@ -89,8 +86,6 @@ public class JwtUserDetailsService implements UserDetailsService {
                 user.getLoginType(),
                 user.getEnabled(),
                 user.getLastPasswordResetTime(),
-                Optional.ofNullable(user.getDept()).map(DeptSmallDTO::getName).orElse(null),
-                Optional.ofNullable(user.getJob()).map(JobSmallDTO::getName).orElse(null),
                 permissionService.mapToGrantedAuthorities(user)
         );
     }

@@ -19,6 +19,7 @@ import java.util.Set;
 
 /**
  * 用户 持久类
+ *
  * @author mission
  * @since 2019/07/08 16:15
  */
@@ -29,8 +30,7 @@ import java.util.Set;
 @Table(name = "sys_user")
 public class User extends BaseEntity {
 
-
-    public final static String ENTITY_NAME ="账号";
+    public final static String ENTITY_NAME = "账号";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,14 +38,12 @@ public class User extends BaseEntity {
     @Column(name = "id")
     private Long id;
 
-
     /**
      * 用户名
      */
     @NotBlank(message = "用户名不能为空")
     @Column(nullable = false)
     private String username;
-
 
     /**
      * 昵称
@@ -60,6 +58,7 @@ public class User extends BaseEntity {
     @JsonIgnore
     @Column(nullable = false)
     private String password;
+
     /**
      * 头像
      */
@@ -75,20 +74,19 @@ public class User extends BaseEntity {
     /**
      * 登录类型
      */
-    @Column(name = "login_type",columnDefinition = "tinyint(1) default 0 comment \'用户登录类型'",nullable = false)
+    @Column(name = "login_type", columnDefinition = "tinyint(1) default 0 comment \'用户登录类型'", nullable = false)
     private Integer loginType;
 
     /**
      * 邮箱
      */
-    @Pattern(regexp = "([a-z0-9A-Z]+[-|.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}",message = "格式错误")
+    @Pattern(regexp = "([a-z0-9A-Z]+[-|.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}", message = "格式错误")
     private String email;
 
     /**
      * 电话
      */
     private String phone;
-
 
     /**
      * 状态
@@ -110,44 +108,24 @@ public class User extends BaseEntity {
      */
     @NotEmpty
     @ManyToMany
-    @JoinTable(name = "sys_users_roles_map",joinColumns ={
-        @JoinColumn(name = "user_id",referencedColumnName = "id")},
-        inverseJoinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "id")})
+    @JoinTable(name = "sys_users_roles_map", joinColumns = {
+            @JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private Set<Role> roles;
-
-
-    /**
-     * 所在岗位
-     */
-    @ManyToOne
-    @NotFound(action = NotFoundAction.IGNORE)
-    @JoinColumn(name = "job_id",foreignKey = @ForeignKey(name = "none"))
-    private Job job;
-
-    /**
-     * 所在部门
-     */
-    @ManyToOne
-    @NotFound(action = NotFoundAction.IGNORE)
-    @JoinColumn(name = "dept_id",foreignKey = @ForeignKey(name = "none"))
-    private Dept dept;
-
 
     @Override
     public String toString() {
         return "User{" +
-            "id=" + id +
-            ", username='" + username + '\'' +
-            ", nickname='" + nickname + '\'' +
-            ", avatar='" + avatar + '\'' +
-            ", email='" + email + '\'' +
-            ", phone='" + phone + '\'' +
-            ", enabled=" + enabled +
-            ", lastLoginTime=" + lastLoginTime +
-            ", lastPasswordResetTime=" + lastPasswordResetTime +
-            ", roles=" + roles +
-            ", job=" + job +
-            ", dept=" + dept +
-            '}';
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", enabled=" + enabled +
+                ", lastLoginTime=" + lastLoginTime +
+                ", lastPasswordResetTime=" + lastPasswordResetTime +
+                ", roles=" + roles +
+                '}';
     }
 }

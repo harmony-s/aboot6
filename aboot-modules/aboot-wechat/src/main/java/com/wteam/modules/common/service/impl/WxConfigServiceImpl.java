@@ -11,10 +11,7 @@ import com.wteam.modules.common.domain.mapper.WxConfigMapper;
 import com.wteam.modules.common.repository.WxConfigRepository;
 import com.wteam.modules.common.service.WxConfigService;
 import com.wteam.modules.miniapp.config.WxMaConfiguration;
-import com.wteam.utils.FileUtil;
-import com.wteam.utils.PageUtil;
-import com.wteam.utils.QueryHelper;
-import com.wteam.utils.ValidUtil;
+import com.wteam.utils.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -116,7 +113,7 @@ public class WxConfigServiceImpl implements WxConfigService {
             map.put("修改时间", wxConfig.getEditTime().format(formatter));
             list.add(map);
         }
-        FileUtil.downloadExcel(list, response);
+        ExcelUtil.downloadExcel(list, response);
     }
 
     @Override

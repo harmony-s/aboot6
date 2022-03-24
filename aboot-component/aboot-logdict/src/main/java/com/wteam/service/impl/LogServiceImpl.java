@@ -18,10 +18,7 @@ import com.wteam.domain.mapper.LogErrorMapper;
 import com.wteam.domain.mapper.LogSmallMapper;
 import com.wteam.repository.LogRepository;
 import com.wteam.service.LogService;
-import com.wteam.utils.FileUtil;
-import com.wteam.utils.PageUtil;
-import com.wteam.utils.QueryHelper;
-import com.wteam.utils.StringUtils;
+import com.wteam.utils.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -144,7 +141,7 @@ public class LogServiceImpl implements LogService {
             map.put("创建日期", log.getCreatedAt());
             list.add(map);
         }
-        FileUtil.downloadExcel(list, response);
+        ExcelUtil.downloadExcel(list, response);
     }
 
     @Override

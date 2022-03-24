@@ -151,6 +151,6 @@ public class ${className}ServiceImpl implements ${className}Service {
             </#list>
             list.add(map);
         }
-        FileUtil.downloadExcel(list, response);
+        ExcelUtil.downloadExcel(list, response);
     }
 }

@@ -146,7 +146,7 @@ public class WxUserServiceImpl implements WxUserService {
             map.put("语言", wxUser.getLanguage());
             list.add(map);
         }
-        FileUtil.downloadExcel(list, response);
+        ExcelUtil.downloadExcel(list, response);
     }
 
     @Override

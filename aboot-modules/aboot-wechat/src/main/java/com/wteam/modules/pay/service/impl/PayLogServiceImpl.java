@@ -16,10 +16,7 @@ import com.wteam.modules.pay.domain.dto.PayLogDTO;
 import com.wteam.modules.pay.domain.mapper.PayLogMapper;
 import com.wteam.modules.pay.repository.PayLogRepository;
 import com.wteam.modules.pay.service.PayLogService;
-import com.wteam.utils.FileUtil;
-import com.wteam.utils.PageUtil;
-import com.wteam.utils.QueryHelper;
-import com.wteam.utils.ValidUtil;
+import com.wteam.utils.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -109,6 +106,6 @@ public class PayLogServiceImpl implements PayLogService {
             map.put("创建时间", payLog.getCreatedAt());
             list.add(map);
         }
-        FileUtil.downloadExcel(list, response);
+        ExcelUtil.downloadExcel(list, response);
     }
 }

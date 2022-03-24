@@ -126,6 +126,7 @@ REPLACE INTO `sys_roles_menus_map` (`menu_id`, `role_id`) VALUES (5, 1);
 REPLACE INTO `sys_roles_menus_map` (`menu_id`, `role_id`) VALUES (12, 1);
 REPLACE INTO `sys_roles_menus_map` (`menu_id`, `role_id`) VALUES (13, 1);
 REPLACE INTO `sys_roles_menus_map` (`menu_id`, `role_id`) VALUES (14, 1);
+REPLACE INTO `sys_roles_menus_map` (`menu_id`, `role_id`) VALUES (15, 1);
 
 -- ----------------------------
 -- Records of roles_permissions_map

@@ -68,6 +68,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<R> handleBadCredentialsException(AuthenticationException e) {
         String message = "坏的凭证".equals(e.getMessage()) ? "用户名或密码不正确" : e.getMessage();
+
+        if (message.toLowerCase().contains("bad ")) {
+            message = "用户名或密码不正确";
+        }
+
         //打印堆栈信息
         log.error(message);
         if (message.contains("could not extract ResultSet")) {

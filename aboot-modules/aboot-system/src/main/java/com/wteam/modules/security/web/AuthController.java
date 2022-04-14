@@ -95,21 +95,14 @@ public class AuthController {
         //密码解密
         RSA rsa = new RSA(privateKey, null);
         String password = new String(rsa.decrypt(loginUser.getPassword(), KeyType.PrivateKey));
+
         //登录
-        JwtUser jwtUser;
-        try {
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser.getUsername().trim(), password);
-            Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            //获取jwt
-            jwtUser = (JwtUser) authentication.getPrincipal();
-        } catch (Exception e) {
-            throw new BadRequestException("帐号或密码错误!");
-        }
-        // 是否冻结
-        if (!jwtUser.isEnabled()) {
-            throw new BadRequestException("该账户已被冻结,请联系管理员");
-        }
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser.getUsername().trim(), password);
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        //获取jwt
+        JwtUser jwtUser = (JwtUser) authentication.getPrincipal();
         // 生成令牌
         String token = jwtTokenUtil.createToken(jwtUser);
 

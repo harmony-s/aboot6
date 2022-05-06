@@ -140,7 +140,7 @@ public class WxAuthController {
             user.setPhone(wxUser.getPhoneNumber());
             user.setLoginType(LoginType.LOGIN_WX);
             user.setEnabled(true);
-            user.setRoles(Sets.newHashSet(new Role(2L)));
+            user.setRoles(Sets.newHashSet(new Role(3L)));
             UserDTO userDTO = userService.create(user);
             wxUser.setUid(userDTO.getId());
             wxUserService.create(wxUser);

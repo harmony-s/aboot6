@@ -17,6 +17,7 @@ import com.wteam.exception.BadRequestException;
 import com.wteam.repository.LocalStorageRepository;
 import com.wteam.service.LocalStorageService;
 import com.wteam.utils.*;
+import com.wteam.utils.enums.FileType;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,19 +31,17 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.wteam.utils.PathUtil.basePath;
 import static com.wteam.utils.PathUtil.fileUrlPrefix;
 
 /**
-* 存储 业务实现层.
-* @author mission
-* @since 2019-11-03
-*/
+ * 存储 业务实现层.
+ *
+ * @author mission
+ * @since 2019-11-03
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
@@ -54,60 +53,61 @@ public class LocalStorageServiceImpl implements LocalStorageService {
 
 
     @Value("${file.maxSize}")
-    private final long maxSize=200L;
+    private final long maxSize = 200L;
 
 
     @Override
-    public Object queryAll(LocalStorageQueryCriteria criteria, Pageable pageable){
-        Page<LocalStorage> page = localStorageRepository.findAll((root, criteriaQuery, criteriaBuilder) ->  QueryHelper.andPredicate(root,criteria,criteriaBuilder),pageable);
+    public Object queryAll(LocalStorageQueryCriteria criteria, Pageable pageable) {
+        Page<LocalStorage> page = localStorageRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelper.andPredicate(root, criteria, criteriaBuilder), pageable);
         return PageUtil.toPage(page.map(localStorageMapper::toDto));
     }
 
     @Override
-    public List<LocalStorageDTO> queryAll(LocalStorageQueryCriteria criteria){
-        return localStorageMapper.toDto(localStorageRepository.findAll((root, criteriaQuery, criteriaBuilder) ->  QueryHelper.andPredicate(root,criteria,criteriaBuilder)));
+    public List<LocalStorageDTO> queryAll(LocalStorageQueryCriteria criteria) {
+        return localStorageMapper.toDto(localStorageRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelper.andPredicate(root, criteria, criteriaBuilder)));
     }
 
     @Override
     public LocalStorageDTO findDTOById(Long id) {
         LocalStorage localStorage = localStorageRepository.findById(id).orElse(null);
-        ValidUtil.notNull(localStorage,LocalStorage.ENTITY_NAME,"id",id);
+        ValidUtil.notNull(localStorage, LocalStorage.ENTITY_NAME, "id", id);
         return localStorageMapper.toDto(localStorage);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public LocalStorageDTO create(String name, MultipartFile multipartFile) {
+        //文件名不超过35个字
+        name = StringUtils.isBlank(name) ? FileUtil.getFileNameNoEx(multipartFile.getOriginalFilename()) : name;
+        if (name.length() > 35) {
+            name = name.substring(0, 35);
+        }
         //校验上传大小
         FileUtil.checkSize(maxSize, multipartFile.getSize());
         //校验重复文件
         String md5 = FileUtil.getMd5(multipartFile);
         LocalStorage storage = localStorageRepository.findFirstByMd5(md5);
-        if (storage!=null) {
-            return localStorageMapper.toDto(storage);
+        if (storage != null) {
+            LocalStorageDTO localStorageDTO = localStorageMapper.toDto(storage);
+            localStorageDTO.setName(name);
+            return localStorageDTO;
         }
 
         String suffix = FileUtil.getExtensionName(multipartFile.getOriginalFilename());
         String type = FileUtil.getFileType(suffix);
         //上传文件到本地
-        File file = FileUtil.upload(multipartFile, basePath() + type +  File.separator);
-        if(ObjectUtil.isNull(file)){
+        File file = FileUtil.upload(multipartFile, basePath() + type + File.separator);
+        if (ObjectUtil.isNull(file)) {
             throw new BadRequestException("上传失败");
         }
 
         String username = null;
-        try{
+        try {
             username = SecurityUtils.getUsername();
-        }catch (Exception e){
+        } catch (Exception e) {
             username = "游客";
         }
         try {
-            //文件名不超过35个字
-            name = StringUtils.isBlank(name) ? FileUtil.getFileNameNoEx(multipartFile.getOriginalFilename()) : name;
-            if (name.length()>35) {
-                name=name.substring(0,35);
-            }
-
             //保存文件实体
             LocalStorage localStorage = new LocalStorage(
                     name,
@@ -121,7 +121,7 @@ public class LocalStorageServiceImpl implements LocalStorageService {
                     StringUtils.join(fileUrlPrefix(), type, "/", file.getName())
             );
             return localStorageMapper.toDto(localStorageRepository.save(localStorage));
-        }catch (Exception e){
+        } catch (Exception e) {
             FileUtil.del(file);
             throw e;
         }
@@ -130,17 +130,24 @@ public class LocalStorageServiceImpl implements LocalStorageService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public LocalStorageDTO uploadImage(String name, MultipartFile multipartFile) {
-        if(!"image".contains(FileUtil.getFileTypeByMimeType(multipartFile.getContentType()))){
-            throw new BadRequestException("上传图片格式不正确");
+        FileType fileType = null;
+        try {
+            fileType = FileUtil.getFileType(multipartFile.getInputStream());
+            List<FileType> pictureTypes = Arrays.asList(FileType.JPEG, FileType.PNG, FileType.GIF, FileType.TIFF, FileType.BMP, FileType.DWG, FileType.PSD);
+            if (!pictureTypes.contains(fileType)) {
+                throw new BadRequestException("上传图片文件格式有误");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return create(name,multipartFile);
+        return create(name, multipartFile);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void update(LocalStorage resources) {
         LocalStorage localStorage = localStorageRepository.findById(resources.getId()).orElse(null);
-        ValidUtil.notNull( localStorage,LocalStorage.ENTITY_NAME,"id",resources.getId());
+        ValidUtil.notNull(localStorage, LocalStorage.ENTITY_NAME, "id", resources.getId());
 
         localStorage.copy(resources);
         localStorageRepository.save(localStorage);
@@ -150,7 +157,7 @@ public class LocalStorageServiceImpl implements LocalStorageService {
     @Transactional(rollbackFor = Exception.class)
     public void delete(Long id) {
         LocalStorage storage = localStorageRepository.findById(id).orElseGet(LocalStorage::new);
-        if (storage.getPath()!=null) {
+        if (storage.getPath() != null) {
             FileUtil.del(storage.getPath());
         }
         localStorageRepository.logicDelete(id);
@@ -170,7 +177,7 @@ public class LocalStorageServiceImpl implements LocalStorageService {
     public void download(List<LocalStorageDTO> queryAll, HttpServletResponse response) throws IOException {
         List<Map<String, Object>> list = new ArrayList<>();
         for (LocalStorageDTO localStorageDTO : queryAll) {
-            Map<String,Object> map = new LinkedHashMap<>();
+            Map<String, Object> map = new LinkedHashMap<>();
             map.put("文件名", localStorageDTO.getRealName());
             map.put("备注名", localStorageDTO.getName());
             map.put("文件类型", localStorageDTO.getType());

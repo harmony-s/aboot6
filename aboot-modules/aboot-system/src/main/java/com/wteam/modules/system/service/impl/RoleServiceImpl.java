@@ -173,9 +173,9 @@ public class RoleServiceImpl implements RoleService {
         }
 
         role.setPermissions(resources.getPermissions());
+        roleRepository.save(role);
         //清理缓存
         delCaches(role.getId(), null);
-        roleRepository.save(role);
     }
 
     @Override
@@ -190,7 +190,8 @@ public class RoleServiceImpl implements RoleService {
 
         role.setMenus(resources.getMenus());
         roleRepository.save(role);
-
+        //清理缓存
+        delCaches(role.getId(),null);
     }
 
     @Override

@@ -109,11 +109,12 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
             int dot = filename.lastIndexOf('.');
             if ((dot > -1) && (dot < (filename.length()))) {
                 filename = filename
-                        .substring(0, dot)
-                        .replaceAll("\\.", "")
-                        .replaceAll(" ", "");
+                        .substring(0, dot);
                 return filename.length() > 20 ? filename.substring(0, 20) : filename;
             }
+        }
+        if (filename == null) {
+            filename = "";
         }
         return filename;
     }
@@ -160,11 +161,16 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
 
     /**
      * 将文件名解析成文件的上传路径
+     * 去除违规字符
      */
     public static File upload(MultipartFile file, String filePath) {
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmssS");
         String name = getFileNameNoEx(file.getOriginalFilename());
+        // 去除违规字符: "."," ","#"
+        name = name.replaceAll("\\.", "")
+                .replaceAll(" ", "")
+                .replaceAll("#", "");
         String suffix = getExtensionName(file.getOriginalFilename());
         String nowStr = "-" + format.format(date);
         try {

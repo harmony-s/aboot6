@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -32,6 +33,7 @@ import java.io.IOException;
 * @since 2020-02-06
 */
 @SuppressWarnings("rawtypes")
+@ApiIgnore
 @Api(value="微信用户Controller",tags={"微信: 用户操作"})
 @RestController
 @RequiredArgsConstructor

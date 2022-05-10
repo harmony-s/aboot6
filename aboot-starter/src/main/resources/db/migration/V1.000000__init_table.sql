@@ -95,7 +95,7 @@ CREATE TABLE `sys_menu`
     `updated_by`  bigint(20)            DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 1
+  AUTO_INCREMENT = 1000
   COLLATE utf8mb4_general_ci COMMENT = '菜单';
 
 -- ----------------------------
@@ -137,6 +137,7 @@ CREATE TABLE `sys_role`
     `updated_by` bigint(20)            DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 1000
   COLLATE = utf8mb4_general_ci COMMENT ='角色';
 
 -- ----------------------------

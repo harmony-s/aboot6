@@ -46,7 +46,7 @@ public class ExcelUtil {
         cellStyle.setAlignment(HorizontalAlignment.CENTER);
         cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 
-        write2Sheet(sheet, list, cellStyle, 0, 0, null);
+        write2Sheet(sheet, list, cellStyle, null, 0, 0, null);
         //response为HttpServletResponse对象
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
         //file.xls是弹出下载对话框的文件名，不能为中文，中文请自行编码
@@ -62,6 +62,7 @@ public class ExcelUtil {
     public static void write2Sheet(XSSFSheet sheet,
                                    List<Map<String, Object>> list,
                                    XSSFCellStyle titleCellStyle,
+                                   XSSFCellStyle contentCellStyle,
                                    int firstRow,
                                    int firstColumn,
                                    String pattern) {
@@ -108,6 +109,9 @@ public class ExcelUtil {
                     }
                     Object value = map.get(key);
                     XSSFCell cell = row.createCell(cellNum);
+                    if (contentCellStyle != null) {
+                        cell.setCellStyle(contentCellStyle);
+                    }
                     String textValue = null;
                     if (value instanceof Integer) {
                         int intValue = (Integer) value;

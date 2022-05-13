@@ -59,16 +59,17 @@ public class JwtUserDetailsService implements UserDetailsService {
         if (userDtoCache.containsKey(username)) {
             jwtUser = userDtoCache.get(username);
         } else {
-            UserDTO user = userService.findByName(username);
-            if (user == null) {
+            try {
+                UserDTO user = userService.findByName(username);
+                if (!user.getEnabled()) {
+                    throw new BadRequestException("账号未激活！");
+                }
+                jwtUser = createJwtUser(user);
+
+                userDtoCache.put(username, jwtUser);
+            }catch (Exception e){
                 throw new BadRequestException("账号不存在");
             }
-            if (!user.getEnabled()) {
-                throw new BadRequestException("账号未激活！");
-            }
-            jwtUser = createJwtUser(user);
-
-            userDtoCache.put(username, jwtUser);
         }
         return jwtUser;
     }

@@ -1,5 +1,7 @@
 package com.wteam.modules.system.domain;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wteam.base.BaseCons;
 import com.wteam.base.BaseEntity;
@@ -127,5 +129,9 @@ public class User extends BaseEntity {
                 ", lastPasswordResetTime=" + lastPasswordResetTime +
                 ", roles=" + roles +
                 '}';
+    }
+
+    public void copy(User source){
+        BeanUtil.copyProperties(source,this, CopyOptions.create().setIgnoreNullValue(true));
     }
 }

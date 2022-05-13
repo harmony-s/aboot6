@@ -113,16 +113,9 @@ public class UserServiceImpl implements UserService {
         if (resources.getEnabled() != null && !resources.getEnabled()) {
             onlineUserService.kickOutForUsername(resources.getUsername());
         }
-        User updateUser = new User();
-        updateUser.setId(user.getId());
-        updateUser.setUsername(resources.getUsername());
-        updateUser.setNickname(resources.getNickname());
-        updateUser.setAvatar(resources.getAvatar());
-        updateUser.setEnabled(resources.getEnabled());
-        updateUser.setRoles(resources.getRoles());
-        updateUser.setPhone(resources.getPhone());
-        updateUser.setSex(resources.getSex());
-        userRepository.save(updateUser);
+
+        user.copy(resources);
+        userRepository.save(user);
     }
 
 

@@ -45,17 +45,16 @@ public class DictDetailController {
 
     private final DictDetailService dictDetailService;
 
+//    @Log("查询字典详情")
     @ApiOperation(value = "查询字典详情")
-    @Log("查询字典详情")
     @GetMapping("page")
     public R getDictDetails(DictDetailQueryCriteria criteria,
                             @PageableDefault(sort = {"sort"},direction = Sort.Direction.ASC) Pageable pageable){
         return R.ok(dictDetailService.queryAll(criteria,pageable));
     }
 
-
+//    @Log("查询多个字典详情")
     @ApiOperation(value = "查询多个字典详情")
-    @Log("查询多个字典详情")
     @GetMapping("map")
     public R getDictDetailMaps(DictDetailQueryCriteria criteria,
                                @PageableDefault(sort = {"sort"},direction = Sort.Direction.ASC) Pageable pageable){
@@ -68,9 +67,8 @@ public class DictDetailController {
         return R.ok(map);
     }
 
-
+//    @Log("新增字典详情")
     @ApiOperation(value = "新增字典详情")
-    @Log("新增字典详情")
     @PostMapping("add")
     @PreAuthorize("@R.check('DICT:all','DICT:add')")
     public R create(@Validated @RequestBody DictDetail resources){
@@ -78,8 +76,8 @@ public class DictDetailController {
         return R.ok(dictDetailService.create(resources));
     }
 
+//    @Log("修改字典详情")
     @ApiOperation(value = "修改字典详情")
-    @Log("修改字典详情")
     @PostMapping("edit")
     @PreAuthorize("@R.check('DICT:all','DICT:edit')")
     public R edit(@Validated(DictDetail.Update.class) @RequestBody DictDetail resources){
@@ -87,8 +85,8 @@ public class DictDetailController {
         return R.ok();
     }
 
+//    @Log("删除字典详情")
     @ApiOperation(value = "删除字典详情")
-    @Log("删除字典详情")
     @PostMapping("del")
     @PreAuthorize("@R.check('DICT:all','DICT:del')")
     public R delete(@RequestBody Long[] ids){

@@ -93,7 +93,7 @@ public class ShowConfigController {
     }
 
 
-    @Log("更改菜单顶部")
+//    @Log("更改菜单顶部")
     @ApiOperation(value = "更改菜单顶部")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "file", value = "文件", dataType = "File", allowMultiple = true),
@@ -106,7 +106,7 @@ public class ShowConfigController {
     }
 
 
-    @Log("更改登录背景图")
+//    @Log("更改登录背景图")
     @ApiOperation(value = "更改登录背景图")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "file", value = "文件", dataType = "File", allowMultiple = true),

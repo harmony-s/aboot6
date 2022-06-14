@@ -46,17 +46,16 @@ public class DictController {
         this.dictService = dictService;
     }
 
-
+//    @Log("查询字典")
     @ApiOperation(value = "查询字典")
-    @Log("查询字典")
     @GetMapping("page")
     @PreAuthorize("@R.check('DICT:all','DICT:list')")
     public R getDicts(DictDTO resources, Pageable pageable){
         return R.ok(dictService.queryAll(resources,pageable));
     }
 
+//    @Log("新增字典")
     @ApiOperation(value = "新增字典")
-    @Log("新增字典")
     @PostMapping("add")
     @PreAuthorize("@R.check('DICT:all','DICT:add')")
     public R create(@Validated @RequestBody Dict resources){
@@ -64,8 +63,8 @@ public class DictController {
         return R.ok(dictService.create(resources));
     }
 
+//    @Log("修改字典")
     @ApiOperation(value = "修改字典")
-    @Log("修改字典")
     @PostMapping("edit")
     @PreAuthorize("@R.check('DICT:all','DICt:del')")
     public R update(@Validated({Dict.Update.class}) @RequestBody Dict resources){
@@ -73,8 +72,8 @@ public class DictController {
         return R.ok();
     }
 
+//    @Log("删除字典")
     @ApiOperation(value = "删除字典")
-    @Log("删除字典")
     @PostMapping("del")
     @PreAuthorize("@R.check('DICT:all','DICT:del')")
     public R delete(@RequestBody Long[] ids){

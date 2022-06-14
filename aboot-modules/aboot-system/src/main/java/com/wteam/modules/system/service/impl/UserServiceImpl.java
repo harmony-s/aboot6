@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -92,7 +93,7 @@ public class UserServiceImpl implements UserService {
         }
 
         //账号校验
-        if (StringUtils.isNotBlank(resources.getUsername())) {
+        if (StringUtils.isNotBlank(resources.getUsername()) && !resources.getUsername().equals(user.getUsername())) {
             User user1 = userRepository.findByUsername(resources.getUsername());
             if (user1 != null && !user.getId().equals(user1.getId())) {
                 throw new EntityExistException(User.ENTITY_NAME, "username", resources.getUsername());
@@ -147,7 +148,7 @@ public class UserServiceImpl implements UserService {
         for (Long id : ids) {
             // 清理缓存
             UserDTO user = findDTOById(id);
-            if (user.getLoginType().equals(LoginType.LOGIN_WX)) {
+            if (user.getLoginType().equals(LoginType.WX)) {
                 uids.add(user.getId());
             }
             delCaches(user.getId(), user.getUsername());
@@ -191,8 +192,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> queryAll(UserQueryCriteria criteria) {
-        List<User> users = userRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelper.andPredicate(root, criteria, criteriaBuilder));
+    public List<UserDTO> queryAll(UserQueryCriteria criteria, Sort sort) {
+        List<User> users = userRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelper.andPredicate(root, criteria, criteriaBuilder), sort);
         return userMapper.toDto(users);
     }
 

@@ -10,7 +10,6 @@ package com.wteam.modules.wechat.web;
 
 import com.google.common.collect.Sets;
 import com.wteam.annotation.AnonymousAccess;
-import com.wteam.annotation.Log;
 import com.wteam.annotation.rest.AnonymousPostMapping;
 import com.wteam.domain.vo.JwtUser;
 import com.wteam.domain.vo.R;
@@ -79,8 +78,8 @@ public class WxAuthController {
      * @param wxLoginDTO /
      * @return /
      */
+//    @Log("微信用户登录")
     @ApiOperation(value = "微信用户登录",notes = "先检查微信是否注册，如果注册,则不需要调用获取手机权限")
-    @Log("微信用户登录")
     @AnonymousPostMapping(value = "loginWx")
     public R loginWx(@Validated @RequestBody WxLoginDTO wxLoginDTO, HttpServletRequest request){
         String openId = handleSaveUser(wxLoginDTO);
@@ -138,7 +137,7 @@ public class WxAuthController {
             user.setAvatar(wxUser.getAvatarUrl());
             user.setSex(wxUser.getGender());
             user.setPhone(wxUser.getPhoneNumber());
-            user.setLoginType(LoginType.LOGIN_WX);
+            user.setLoginType(LoginType.WX);
             user.setEnabled(true);
             user.setRoles(Sets.newHashSet(new Role(3L)));
             UserDTO userDTO = userService.create(user);

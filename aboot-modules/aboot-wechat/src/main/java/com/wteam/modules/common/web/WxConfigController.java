@@ -51,7 +51,7 @@ public class WxConfigController {
         return R.ok(wxConfigService.queryAll(criteria,pageable));
     }
 
-    @Log("查询微信配置详情")
+//    @Log("查询微信配置详情")
     @ApiOperation(value = "查询微信配置")
     @GetMapping(value = "/get/{id}")
     @PreAuthorize("@R.check('GENTEMPLATE:all','GENTEMPLATE:list')")
@@ -59,7 +59,7 @@ public class WxConfigController {
     return R.ok(wxConfigService.findDTOById(id));
     }
 
-    @Log("新增微信配置")
+//    @Log("新增微信配置")
     @ApiOperation(value = "新增微信配置")
     @PostMapping(value = "/add")
     @PreAuthorize("@R.check('WXCONFIG:all','WXCONFIG:add')")
@@ -67,7 +67,7 @@ public class WxConfigController {
         return R.ok(wxConfigService.create(resources));
     }
 
-    @Log("修改微信配置")
+//    @Log("修改微信配置")
     @ApiOperation(value = "修改微信配置")
     @PostMapping(value = "/edit")
     @PreAuthorize("@R.check('WXCONFIG:all','WXCONFIG:edit')")
@@ -76,7 +76,7 @@ public class WxConfigController {
         return R.ok();
     }
 
-   @Log("删除微信配置")
+//   @Log("删除微信配置")
     @ApiOperation(value = "删除微信配置")
     @PostMapping(value = "/del")
     @PreAuthorize("@R.check('WXCONFIG:all','WXCONFIG:del')")
@@ -85,7 +85,7 @@ public class WxConfigController {
         return R.ok();
     }
 
-    @Log("导出数据")
+//    @Log("导出数据")
     @ApiOperation("导出数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@R.check('WXCONFIG:all','WXCONFIG:list')")

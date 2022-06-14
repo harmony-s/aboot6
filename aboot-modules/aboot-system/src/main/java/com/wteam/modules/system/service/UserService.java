@@ -4,8 +4,8 @@ import com.wteam.domain.vo.JwtUser;
 import com.wteam.modules.system.domain.User;
 import com.wteam.modules.system.domain.criteria.UserQueryCriteria;
 import com.wteam.modules.system.domain.dto.UserDTO;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -97,7 +97,7 @@ public interface UserService {
      * @param criteria
      * @return
      */
-    List<UserDTO> queryAll(UserQueryCriteria criteria);
+    List<UserDTO> queryAll(UserQueryCriteria criteria, Sort sort);
 
     /**
      * 导出用户列表

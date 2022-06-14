@@ -68,9 +68,8 @@ public class MenuController {
         return R.ok(menuService.getMenuTree(menuService.findByPid(0L)));
     }
 
-
+//    @Log("查询菜单")
     @ApiOperation(value = "查询菜单")
-    @Log("查询菜单")
     @GetMapping(value = "get")
     @PreAuthorize("@R.check('MENU:all','MENU:list')")
     public R getMenus(MenuQueryCriteria criteria){
@@ -78,8 +77,8 @@ public class MenuController {
         return R.ok(menuService.buildTree(menuDTOList));
     }
 
+//    @Log("新增菜单")
     @ApiOperation(value = "新增菜单")
-    @Log("新增菜单")
     @PostMapping(value = "/add")
     @PreAuthorize("@R.check('MENU:all','MENU:add')")
     public R create(@Validated @RequestBody Menu resources){
@@ -87,8 +86,8 @@ public class MenuController {
         return  R.ok(menuService.create(resources));
     }
 
+//    @Log("修改菜单")
     @ApiOperation(value = "修改菜单")
-    @Log("修改菜单")
     @PostMapping("/edit")
     @PreAuthorize("@R.check('MENU:all','MENU:edit')")
     public R update(@Validated(Menu.Update.class) @RequestBody Menu resources){
@@ -96,9 +95,8 @@ public class MenuController {
         return R.ok();
     }
 
-
+//    @Log("删除菜单")
     @ApiOperation(value = "删除菜单")
-    @Log("删除菜单")
     @PostMapping("/del")
     @PreAuthorize("@R.check('MENU:all','MENU:del')")
     public R delete(@RequestBody Long[] ids){

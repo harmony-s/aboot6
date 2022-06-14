@@ -10,7 +10,6 @@ package com.wteam.modules.system.web;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
 import com.google.common.collect.Sets;
-import com.wteam.annotation.Log;
 import com.wteam.annotation.permission.PermissionGroup;
 import com.wteam.base.BaseEntity;
 import com.wteam.domain.dto.LocalStorageDTO;
@@ -35,6 +34,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
@@ -72,12 +72,28 @@ public class UserController {
 
     private final RoleService roleService;
 
-    //    @Log("查询用户")
-    @ApiOperation(value = "查询用户列表")
+//    @Log("查询用户分页")
+    @ApiOperation(value = "查询用户分页")
     @GetMapping("/page")
     @PreAuthorize("@R.check('USER:all','USER:list')")
     public R getUsers(UserQueryCriteria criteria, Pageable pageable) {
         return R.ok(userService.queryAll(criteria, pageable));
+    }
+
+//    @Log("查询用户列表")
+    @ApiOperation(value = "查询用户列表")
+    @GetMapping("/list")
+    @PreAuthorize("@R.check('USER:all','USER:list')")
+    public R getUsers(UserQueryCriteria criteria, Sort sort) {
+        return R.ok(userService.queryAll(criteria, sort));
+    }
+
+//    @Log("查询用户详情")
+    @ApiOperation(value = "查询用户详情")
+    @GetMapping(value = "/get/{id}")
+    @PreAuthorize("@R.check('USER:all', 'USER:list')")
+    public R get(@PathVariable Long id) {
+        return R.ok(userService.findDTOById(id));
     }
 
     @ApiOperation(value = "个人中心:用户资料修改")
@@ -157,7 +173,7 @@ public class UserController {
     @GetMapping(value = "/download")
     @PreAuthorize("@R.check('USER:all','USER:list')")
     public void download(HttpServletResponse response, UserQueryCriteria criteria) throws IOException {
-        userService.download(userService.queryAll(criteria), response);
+        userService.download(userService.queryAll(criteria, Sort.unsorted()), response);
     }
 
     @ApiOperation(value = "新增管理员")
@@ -170,8 +186,8 @@ public class UserController {
         user.setNickname(resources.getUsername());
         user.setAvatar("");
         user.setSex(1);
-        user.setLoginType(LoginType.LOGIN_ADMIN);
-        user.setRoles(Sets.newHashSet(new Role(1L)));
+        user.setLoginType(LoginType.ADMIN);
+        user.setRoles(Sets.newHashSet(new Role(2L)));
 
         BeanUtil.copyPropertiesNotNull(resources, user);
         // 密码解密

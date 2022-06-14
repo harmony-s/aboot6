@@ -35,7 +35,7 @@ public class RedisController {
 
     private final RedisService redisService;
 
-    @Log("查询Redis缓存")
+//    @Log("查询Redis缓存")
     @ApiOperation("查询Redis缓存")
     @GetMapping("/page")
     @PreAuthorize("@R.check('REDIS:all','REDIS:list')")
@@ -43,7 +43,7 @@ public class RedisController {
         return R.ok(redisService.findByKey(key,pageable));
     }
 
-    @Log("删除Redis缓存")
+//    @Log("删除Redis缓存")
     @ApiOperation("删除Redis缓存")
     @PostMapping("/del")
     @PreAuthorize("@R.check('REDIS:all','REDIS:del')")
@@ -53,7 +53,7 @@ public class RedisController {
     }
 
 
-    @Log("清空Redis缓存")
+//    @Log("清空Redis缓存")
     @ApiOperation("清空Redis缓存")
     @PostMapping("/delAll/{type}")
     @PreAuthorize("@R.check('REDIS:all','REDIS:del')")

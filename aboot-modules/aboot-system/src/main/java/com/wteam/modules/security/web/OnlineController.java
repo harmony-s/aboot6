@@ -48,7 +48,7 @@ public class OnlineController {
         return R.ok(onlineUserService.getAll(filter, pageable));
     }
 
-    @Log("导出数据")
+//    @Log("导出数据")
     @ApiOperation("导出数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@R.check('ONLINE:all','ONLINE:list')")

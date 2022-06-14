@@ -55,8 +55,8 @@ public class PermissionController {
         return R.ok(permissionService.getPermissionTree(permissionService.findByPid(0L)));
     }
 
+//    @Log("查询权限")
     @ApiOperation(value = "查询权限")
-    @Log("查询权限")
     @GetMapping("/get")
     @PreAuthorize("@R.check('PERMISSION:all','PERMISSION:list')")
     public R getPermissions(PermissionQueryCriteria criteria){
@@ -64,9 +64,8 @@ public class PermissionController {
         return R.ok(permissionService.buildTree(permissionDTOS));
     }
 
-
+//    @Log("新增权限")
     @ApiOperation(value = "新增权限")
-    @Log("新增权限")
     @PostMapping("/add")
     @PreAuthorize("@R.check('PERMISSION:all','PERMISSION:add')")
     public R create(@Validated @RequestBody Permission resources){
@@ -74,8 +73,8 @@ public class PermissionController {
         return R.ok(permissionService.create(resources));
     }
 
+//    @Log("修改权限")
     @ApiOperation("修改权限")
-    @Log("修改权限")
     @PostMapping("/edit")
     @PreAuthorize("@R.check('PERMISSION:all','PERMISSION:edit')")
     public R update(@Validated(Permission.Update.class) @RequestBody Permission resources){
@@ -84,8 +83,8 @@ public class PermissionController {
     }
 
 
+//    @Log("删除权限")
     @ApiOperation(value = "删除权限")
-    @Log("删除权限")
     @PostMapping("/del")
     @PreAuthorize("@R.check('PERMISSION:all','PERMISSION:del')")
     public R delete(@RequestBody Long[] ids){

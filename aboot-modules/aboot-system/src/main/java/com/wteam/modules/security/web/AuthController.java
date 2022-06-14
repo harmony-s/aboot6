@@ -76,8 +76,8 @@ public class AuthController {
      * @param loginUser /
      * @return /
      */
+//    @Log("用户登录")
     @ApiOperation(value = "用户登录")
-    @Log("用户登录")
     @AnonymousPostMapping(value = "login")
     public R login(@Validated @RequestBody LoginUser loginUser, HttpServletRequest request) {
         // 查询验证码
@@ -149,7 +149,7 @@ public class AuthController {
         }};
     }
 
-    @Log(value = "用户退出")
+//    @Log(value = "用户退出")
     @ApiOperation("用户退出")
     @PostMapping(value = "logout")
     public R logout(HttpServletRequest request) {

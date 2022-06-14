@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
 /**
  * @author mission
@@ -19,8 +19,8 @@ public class UserQueryCriteria implements Serializable {
     private Long id;
 
     @ApiModelProperty("登录类型")
-    @Query(propName = "loginType")
-    private Integer userType;
+    @Query
+    private Integer loginType;
 
     @ApiModelProperty("用户名, 按用户名模糊查询")
     @Query(type = Query.Type.INNER_LIKE)
@@ -42,4 +42,11 @@ public class UserQueryCriteria implements Serializable {
     @Query
     private Boolean enabled;
 
+    @ApiModelProperty("不包含查询: 角色id")
+    @Query(type = Query.Type.NOT_IN, propName = "id", joinName = "roles")
+    private List<Long> roleIdNotIn;
+
+    @ApiModelProperty("包含查询: 角色id")
+    @Query(type = Query.Type.IN, propName = "id", joinName = "roles")
+    private List<Long> roleIdIn;
 }

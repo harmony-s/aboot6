@@ -66,12 +66,12 @@ public class RoleController {
     @ApiOperation(value = "返回全部的角色，新增用户时下拉选择")
     @GetMapping(value = "/all")
     @PreAuthorize("@R.check('ROLES:all','USER:all','USER:add','USER:edit')")
-    public R getAll(@PageableDefault(value = 2000, sort = {"level"}, direction = Sort.Direction.ASC) Pageable pageable){
-        return R.ok(roleService.queryAll(pageable));
+    public R getAll(RoleQueryCriteria criteria) {
+        return R.ok(roleService.queryAll(criteria));
     }
 
+//    @Log("查询角色")
     @ApiOperation(value = "查询角色列表")
-    @Log("查询角色")
     @GetMapping(value = "/page")
     @PreAuthorize("@R.check('ROLES:all','ROLES:list')")
     public R getRoles(RoleQueryCriteria criteria, Pageable pageable){
@@ -84,8 +84,8 @@ public class RoleController {
         return R.ok(Dict.create().set("level", getLevels(null)));
     }
 
+//    @Log("新增角色")
     @ApiOperation(value = "新增角色")
-    @Log("新增角色")
     @PostMapping(value = "/add")
     @PreAuthorize("@R.check('ROLES:all','ROLES:add')")
     public R create(@Validated @RequestBody Role resources){
@@ -94,8 +94,8 @@ public class RoleController {
         return R.ok(roleService.create(resources));
     }
 
+//    @Log("修改角色")
     @ApiOperation(value = "修改角色")
-    @Log("修改角色")
     @PostMapping(value = "/edit")
     @PreAuthorize("@R.check('ROLES:all','ROLES:edit')")
     public R edit(@Validated(Role.Update.class) @RequestBody Role resources){
@@ -104,8 +104,8 @@ public class RoleController {
         return R.ok();
     }
 
+//    @Log("修改角色权限")
     @ApiOperation(value = "修改角色权限")
-    @Log("修改角色权限")
     @PostMapping(value = "/updatePermission")
     @PreAuthorize("@R.check('ROLES:all','ROLES:edit')")
     public R updatePermission(@RequestBody Role resources){
@@ -115,8 +115,8 @@ public class RoleController {
         return R.ok();
     }
 
+//    @Log("修改角色菜单")
     @ApiOperation(value = "修改角色菜单")
-    @Log("修改角色菜单")
     @PostMapping(value = "/updateMenu")
     @PreAuthorize("@R.check('ROLES:all','ROLES:edit')")
     public R updateMenu(@RequestBody Role resources){
@@ -126,8 +126,8 @@ public class RoleController {
         return R.ok();
     }
 
+//    @Log("删除角色")
     @ApiOperation(value = "删除角色")
-    @Log("删除角色")
     @PostMapping(value = "/del")
     @PreAuthorize("@R.check('ROLES:all','ROLES:del')")
     public R delete(@RequestBody Set<Long> ids){

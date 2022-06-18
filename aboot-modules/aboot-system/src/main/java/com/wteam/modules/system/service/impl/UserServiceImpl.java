@@ -28,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -78,7 +77,7 @@ public class UserServiceImpl implements UserService {
             resources.setEnabled(true);
         }
 
-        resources.setLastPasswordResetTime(Timestamp.valueOf(LocalDateTime.now()));
+        resources.setLastPasswordResetTime(LocalDateTime.now());
         return userMapper.toDto(userRepository.save(resources));
     }
 
@@ -174,7 +173,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(rollbackFor = Exception.class)
     public void updatePass(String username, String pass) {
         flushCache(username);
-        userRepository.updatePass(username, pass, Timestamp.valueOf(LocalDateTime.now()));
+        userRepository.updatePass(username, pass, LocalDateTime.now());
     }
 
     @Override
@@ -220,7 +219,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateLoginTime(JwtUser jwtUser) {
-        userRepository.updateLoginTime(jwtUser.getUsername(), Timestamp.valueOf(LocalDateTime.now()));
+        userRepository.updateLoginTime(jwtUser.getUsername(), LocalDateTime.now());
     }
 
     /**

@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
 * 存储 DTO类.
@@ -46,5 +46,5 @@ public class LocalStorageDTO implements Serializable {
     /*文件相对路径*/
     private String url;
     /*创建时间*/
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 }

@@ -6,7 +6,7 @@ import com.wteam.modules.system.domain.User;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -50,7 +50,7 @@ public interface UserRepository extends BaseRepository<User, Long> {
      */
     @Modifying
     @Query(value = "update sys_user set password = ?2 , last_password_reset_time = ?3 where username = ?1", nativeQuery = true)
-    void updatePass(String username, String pass, Timestamp lastPasswordResetTime);
+    void updatePass(String username, String pass, LocalDateTime lastPasswordResetTime);
 
     /**
      * 修改头像
@@ -80,7 +80,7 @@ public interface UserRepository extends BaseRepository<User, Long> {
      */
     @Modifying
     @Query(value = "update sys_user set last_login_time = ?2 where username = ?1", nativeQuery = true)
-    void updateLoginTime(String username, Timestamp loginTime);
+    void updateLoginTime(String username, LocalDateTime loginTime);
 
     /**
      * 根据角色查询用户

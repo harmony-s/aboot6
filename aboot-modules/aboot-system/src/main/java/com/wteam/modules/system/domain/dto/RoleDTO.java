@@ -3,7 +3,7 @@ package com.wteam.modules.system.domain.dto;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 
@@ -30,5 +30,5 @@ public class RoleDTO implements Serializable {
 
     private Set<MenuDTO> menus;
 
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 }

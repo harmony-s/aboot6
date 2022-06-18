@@ -11,7 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
 * 数据组 DTO类.
@@ -41,6 +41,6 @@ public class GroupDataDTO implements Serializable {
 
     /** 创建时间 */
     @ApiModelProperty( "创建时间")
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
 }

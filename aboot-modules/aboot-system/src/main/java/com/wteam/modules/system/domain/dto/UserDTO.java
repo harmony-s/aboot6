@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
@@ -37,9 +37,9 @@ public class UserDTO implements Serializable {
 
     private Integer loginType;
 
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
-    private Timestamp lastPasswordResetTime;
+    private LocalDateTime lastPasswordResetTime;
 
     @ApiModelProperty(hidden = true)
     private Set<RoleSmallDTO> roles;

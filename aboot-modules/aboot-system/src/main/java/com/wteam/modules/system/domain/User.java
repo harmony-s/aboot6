@@ -16,7 +16,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
@@ -98,12 +98,12 @@ public class User extends BaseEntity {
     /**
      * 最后登录时间
      */
-    private Timestamp lastLoginTime;
+    private LocalDateTime lastLoginTime;
 
     /**
      * 最后修改密码时间
      */
-    private Timestamp lastPasswordResetTime;
+    private LocalDateTime lastPasswordResetTime;
 
     /**
      * 拥有角色

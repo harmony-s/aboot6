@@ -10,7 +10,7 @@ package com.wteam.modules.monitor.domain;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * 访问记录 持久类
@@ -35,7 +35,7 @@ public class Visits {
     private Long ipCounts;
 
     @Column(name = "created_by")
-    private Timestamp createdBy;
+    private LocalDateTime createdBy;
 
     @Column(name = "week_day")
     private String weekDay;

@@ -12,7 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * 在线用户
@@ -47,5 +47,5 @@ public class OnlineUser implements Serializable {
     private String key;
 
     //登录时间
-    private Timestamp loginTime;
+    private LocalDateTime loginTime;
 }

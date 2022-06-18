@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -63,8 +62,8 @@ public class VisitsServiceImpl implements VisitsService {
             return;
         }
         visits.setPvCounts(visits.getPvCounts()+1L);
-        long ipCounts=logRepository.findIp(Timestamp.valueOf(localDate.atStartOfDay()),
-                Timestamp.valueOf(localDate.plusDays(1).atStartOfDay()));
+        long ipCounts=logRepository.findIp(localDate.atStartOfDay(),
+                localDate.plusDays(1).atStartOfDay());
         visits.setIpCounts(ipCounts);
         visitsRepository.save(visits);
     }

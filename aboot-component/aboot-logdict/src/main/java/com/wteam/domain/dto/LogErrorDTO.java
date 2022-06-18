@@ -10,8 +10,7 @@ package com.wteam.domain.dto;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-
+import java.time.LocalDateTime;
 
 /**
  * 错误日志
@@ -60,5 +59,5 @@ public class LogErrorDTO implements Serializable {
     /**
      * 创建日期
      */
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 }

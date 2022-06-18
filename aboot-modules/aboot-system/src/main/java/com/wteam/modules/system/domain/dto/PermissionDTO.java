@@ -3,7 +3,7 @@ package com.wteam.modules.system.domain.dto;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -21,7 +21,7 @@ public class PermissionDTO implements Serializable{
 
 	private String alias;
 
-	private Timestamp createdAt;
+	private LocalDateTime createdAt;
 
 	private List<PermissionDTO>  children;
 

@@ -2,7 +2,7 @@ package com.wteam.modules.system.domain.dto;
 
 import lombok.Data;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -36,5 +36,5 @@ public class MenuDTO {
 
     private List<MenuDTO> children;
 
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 }

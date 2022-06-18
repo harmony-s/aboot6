@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * @author mission
@@ -29,7 +29,7 @@ public interface LogRepository extends BaseRepository<Log,Long> {
      * @return
      */
     @Query(value = "select count(*) FROM (select request_ip FROM sys_log where created_at between ?1 and ?2 GROUP BY request_ip) as s",nativeQuery = true)
-    Long findIp(Timestamp date1, Timestamp date2);
+    Long findIp(LocalDateTime date1, LocalDateTime date2);
 
     /**
      * findExceptionById

@@ -11,10 +11,10 @@ CREATE TABLE `sys_dict`
     `id`         bigint(11)   NOT NULL AUTO_INCREMENT COMMENT 'ID',
     `name`       varchar(64)  NOT NULL COMMENT '字典名称',
     `remark`     varchar(255) NULL     DEFAULT NULL COMMENT '描述',
-    `created_at` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `created_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `created_by` bigint(20)   NOT NULL DEFAULT '0' COMMENT '创建人',
-    `deleted_at` timestamp    NULL     DEFAULT NULL COMMENT '逻辑删除时间',
-    `updated_at` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    `deleted_at` datetime     NULL     DEFAULT NULL COMMENT '逻辑删除时间',
+    `updated_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
     `updated_by` bigint(20)            DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
@@ -32,10 +32,10 @@ CREATE TABLE `sys_dict_detail`
     `value`      varchar(255) NOT NULL COMMENT '字典值',
     `sort`       varchar(255) NULL     DEFAULT NULL COMMENT '排序',
     `dict_id`    bigint(11)   NULL     DEFAULT NULL COMMENT '字典id',
-    `created_at` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `created_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `created_by` bigint(20)   NOT NULL DEFAULT '0' COMMENT '创建人',
-    `deleted_at` timestamp    NULL     DEFAULT NULL COMMENT '逻辑删除时间',
-    `updated_at` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    `deleted_at` datetime     NULL     DEFAULT NULL COMMENT '逻辑删除时间',
+    `updated_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
     `updated_by` bigint(20)            DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`id`) USING BTREE,
     INDEX `detail_dict_id_index` (`dict_id`) USING BTREE,
@@ -61,10 +61,10 @@ CREATE TABLE `sys_log`
     `request_ip`       varchar(255) NULL     DEFAULT NULL COMMENT '请求ip',
     `address`          varchar(255) NULL     DEFAULT NULL COMMENT '请求地址',
     `browser`          varchar(255) NULL     DEFAULT NULL COMMENT '浏览器',
-    `created_at`       timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `created_at`       datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `created_by`       bigint(20)   NOT NULL DEFAULT '0' COMMENT '创建人',
-    `deleted_at`       timestamp    NULL     DEFAULT NULL COMMENT '逻辑删除时间',
-    `updated_at`       timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    `deleted_at`       datetime     NULL     DEFAULT NULL COMMENT '逻辑删除时间',
+    `updated_at`       datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
     `updated_by`       bigint(20)            DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
@@ -88,10 +88,10 @@ CREATE TABLE `sys_menu`
     `sort`        bigint(20)   NOT NULL COMMENT '排序',
     `icon`        varchar(255) NULL     DEFAULT NULL COMMENT '图标',
     `path`        varchar(255) NULL     DEFAULT NULL COMMENT '链接地址',
-    `created_at`  timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `created_at`  datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `created_by`  bigint(20)   NOT NULL DEFAULT '0' COMMENT '创建人',
-    `deleted_at`  timestamp    NULL     DEFAULT NULL COMMENT '逻辑删除时间',
-    `updated_at`  timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    `deleted_at`  datetime     NULL     DEFAULT NULL COMMENT '逻辑删除时间',
+    `updated_at`  datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
     `updated_by`  bigint(20)            DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
@@ -108,10 +108,10 @@ CREATE TABLE `sys_permission`
     `alias`      varchar(255) NULL     DEFAULT NULL COMMENT '别名',
     `name`       varchar(255) NULL     DEFAULT NULL COMMENT '名称',
     `parent_id`  int(11)      NOT NULL COMMENT '上级权限',
-    `created_at` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `created_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `created_by` bigint(20)   NOT NULL DEFAULT '0' COMMENT '创建人',
-    `deleted_at` timestamp    NULL     DEFAULT NULL COMMENT '逻辑删除时间',
-    `updated_at` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    `deleted_at` datetime     NULL     DEFAULT NULL COMMENT '逻辑删除时间',
+    `updated_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
     `updated_by` bigint(20)            DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
@@ -130,10 +130,10 @@ CREATE TABLE `sys_role`
     `data_scope` varchar(255)          DEFAULT NULL COMMENT '数据范围',
     `level`      int(255)              DEFAULT NULL COMMENT '角色级别(越小越高)',
     `remark`     varchar(255)          DEFAULT NULL COMMENT '备注',
-    `created_at` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `created_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `created_by` bigint(20)   NOT NULL DEFAULT '0' COMMENT '创建人',
-    `deleted_at` timestamp    NULL     DEFAULT NULL COMMENT '逻辑删除时间',
-    `updated_at` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    `deleted_at` datetime     NULL     DEFAULT NULL COMMENT '逻辑删除时间',
+    `updated_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
     `updated_by` bigint(20)            DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
@@ -186,12 +186,12 @@ CREATE TABLE `sys_user`
     `avatar`                   VARCHAR(255) NULL     DEFAULT NULL COMMENT '头像地址',
     `sex`                      TINYINT(1)   NULL     DEFAULT '0' COMMENT '性别 0未知,1男,2女',
     `enabled`                  BIT(1)       NOT NULL DEFAULT b'1' COMMENT '状态：1启用、0禁用',
-    `last_password_reset_time` TIMESTAMP    NULL     DEFAULT NULL COMMENT '最后修改密码的日期',
-    `last_login_time`          TIMESTAMP    NULL     DEFAULT NULL COMMENT '最后登录时间',
-    `created_at`               timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `last_password_reset_time` datetime     NULL     DEFAULT NULL COMMENT '最后修改密码的日期',
+    `last_login_time`          datetime     NULL     DEFAULT NULL COMMENT '最后登录时间',
+    `created_at`               datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `created_by`               bigint(20)   NOT NULL DEFAULT '0' COMMENT '创建人',
-    `deleted_at`               timestamp    NULL     DEFAULT NULL COMMENT '逻辑删除时间',
-    `updated_at`               timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    `deleted_at`               datetime     NULL     DEFAULT NULL COMMENT '逻辑删除时间',
+    `updated_at`               datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
     `updated_by`               bigint(20)            DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
@@ -224,7 +224,7 @@ CREATE TABLE `sys_visits`
     `ip_counts`  bigint(20)   NULL     DEFAULT NULL COMMENT '访问量',
     `pv_counts`  bigint(20)   NULL     DEFAULT NULL COMMENT 'ip量',
     `week_day`   varchar(255) NULL     DEFAULT NULL COMMENT '星期',
-    `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `created_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE,
     UNIQUE INDEX `visits_date_index` (`date`) USING BTREE
 ) ENGINE = InnoDB
@@ -241,10 +241,10 @@ CREATE TABLE `tool_show_config`
     `name`       varchar(255) NULL     DEFAULT NULL COMMENT '键',
     `value`      varchar(255) NULL     DEFAULT NULL COMMENT '值',
     `enabled`    bit(1)       NULL     DEFAULT NULL COMMENT '是否启用',
-    `created_at` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `created_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `created_by` bigint(20)   NOT NULL DEFAULT '0' COMMENT '创建人',
-    `deleted_at` timestamp    NULL     DEFAULT NULL COMMENT '逻辑删除时间',
-    `updated_at` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    `deleted_at` datetime     NULL     DEFAULT NULL COMMENT '逻辑删除时间',
+    `updated_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
     `updated_by` bigint(20)            DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
@@ -267,10 +267,10 @@ CREATE TABLE `tool_local_storage`
     `type`       varchar(255) NULL     DEFAULT NULL COMMENT '文件类型',
     `md5`        varchar(255)          DEFAULT NULL COMMENT '文件MD5',
     `url`        varchar(255) NULL     DEFAULT NULL COMMENT '文件相对路径',
-    `created_at` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `created_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `created_by` bigint(20)   NOT NULL DEFAULT '0' COMMENT '创建人',
-    `deleted_at` timestamp    NULL     DEFAULT NULL COMMENT '逻辑删除时间',
-    `updated_at` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    `deleted_at` datetime     NULL     DEFAULT NULL COMMENT '逻辑删除时间',
+    `updated_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
     `updated_by` bigint(20)            DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
@@ -285,10 +285,10 @@ CREATE TABLE `tool_group_data`
     `value`      TEXT         NOT NULL COMMENT '数据组对应的数据值（json数据）',
     `sort`       INT(11)      NULL     DEFAULT NULL COMMENT '排序字段',
     `enabled`    BIT(1)       NOT NULL COMMENT '状态（1：开启；2：关闭；）',
-    `created_at` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `created_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `created_by` bigint(20)   NOT NULL DEFAULT '0' COMMENT '创建人',
-    `deleted_at` timestamp    NULL     DEFAULT NULL COMMENT '逻辑删除时间',
-    `updated_at` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    `deleted_at` datetime     NULL     DEFAULT NULL COMMENT '逻辑删除时间',
+    `updated_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
     `updated_by` bigint(20)            DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB

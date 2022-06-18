@@ -13,7 +13,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
 * 交易日志表 DTO类.
@@ -77,5 +77,5 @@ public class PayLogDTO implements Serializable {
 
     /** 创建时间 */
     @ApiModelProperty( "创建时间")
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 }

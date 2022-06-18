@@ -17,7 +17,7 @@ import org.springframework.util.Assert;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * 通用数据传输对象
@@ -33,9 +33,9 @@ public class BaseDTO  implements Serializable {
 
     private Long updatedBy;
 
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
-    private Timestamp updatedAt;
+    private LocalDateTime updatedAt;
 
 
 

@@ -12,6 +12,9 @@ import lombok.Data;
 <#if hasTimestamp>
 import java.sql.Timestamp;
 </#if>
+<#if hasLocalDate || hasLocalTime || hasLocalDateTime>
+import java.time.*;
+</#if>
 <#if hasBigDecimal>
 import java.math.BigDecimal;
 </#if>

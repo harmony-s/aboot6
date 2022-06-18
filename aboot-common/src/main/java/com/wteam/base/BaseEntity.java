@@ -26,7 +26,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * 实体类继承类
@@ -60,16 +60,16 @@ public abstract class BaseEntity implements Serializable {
      */
     @CreationTimestamp
     @ApiModelProperty(value = "创建时间", hidden = true)
-    @Column(nullable = false, columnDefinition = "timestamp not null default CURRENT_TIMESTAMP comment '创建时间'")
-    private Timestamp createdAt;
+    @Column(nullable = false, columnDefinition = "datetime not null default CURRENT_TIMESTAMP comment '创建时间'")
+    private LocalDateTime createdAt;
 
     /**
      * 修改时间
      */
     @UpdateTimestamp
     @ApiModelProperty(value = "更新时间", hidden = true)
-    @Column(columnDefinition = "timestamp default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP comment '修改时间'")
-    private Timestamp updatedAt;
+    @Column(columnDefinition = "datetime default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP comment '修改时间'")
+    private LocalDateTime updatedAt;
 
 
     /**
@@ -78,8 +78,8 @@ public abstract class BaseEntity implements Serializable {
     @JsonIgnore
     @JSONField(serialize=false)
     @ApiModelProperty(value = "逻辑删除时间", hidden = true)
-    @Column(columnDefinition = "timestamp null comment '逻辑删除时间'")
-    private Timestamp deletedAt;
+    @Column(columnDefinition = "datetime null comment '逻辑删除时间'")
+    private LocalDateTime deletedAt;
 
     /* 分组校验 */
     public @interface Create {}

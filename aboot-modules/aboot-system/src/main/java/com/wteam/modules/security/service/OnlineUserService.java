@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -60,7 +59,7 @@ public class OnlineUserService {
         String os = userAgent.getOperatingSystem().getName();
         OnlineUser onlineUser = null;
         try {
-            onlineUser = new OnlineUser(jwtUser.getUsername(), jwtUser.getNickname(), browser, os, ip, address, EncryptUtils.desEncrypt(token), Timestamp.valueOf(LocalDateTime.now()));
+            onlineUser = new OnlineUser(jwtUser.getUsername(), jwtUser.getNickname(), browser, os, ip, address, EncryptUtils.desEncrypt(token), LocalDateTime.now());
         } catch (Exception e) {
             e.printStackTrace();
             throw new BadRequestException("登录失败");

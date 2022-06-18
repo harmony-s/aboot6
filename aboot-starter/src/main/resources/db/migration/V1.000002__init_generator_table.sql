@@ -44,10 +44,10 @@ CREATE TABLE `gen_config`
     `author`        varchar(64)  NULL     DEFAULT NULL COMMENT '作者',
     `prefix`        varchar(64)  NULL     DEFAULT NULL COMMENT '表前缀',
     `cover`         bit(1)       NOT NULL COMMENT '是否覆盖',
-    `created_at`    timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `created_at`    datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `created_by`    bigint(20)   NOT NULL DEFAULT '0' COMMENT '创建人',
-    `deleted_at`    timestamp    NULL     DEFAULT NULL COMMENT '逻辑删除时间',
-    `updated_at`    timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    `deleted_at`    datetime     NULL     DEFAULT NULL COMMENT '逻辑删除时间',
+    `updated_at`    datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
     `updated_by`    bigint(20)            DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
@@ -64,10 +64,10 @@ CREATE TABLE `gen_template`
     `name`       varchar(64) NULL     DEFAULT NULL COMMENT '模板名字',
     `type`       tinyint(1)  NULL     DEFAULT NULL COMMENT '类型',
     `enabled`    bit(1)      NOT NULL DEFAULT b'1' COMMENT '是否生成该模板',
-    `created_at` timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `created_at` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `created_by` bigint(20)  NOT NULL DEFAULT '0' COMMENT '创建人',
-    `deleted_at` timestamp   NULL     DEFAULT NULL COMMENT '逻辑删除时间',
-    `updated_at` timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    `deleted_at` datetime    NULL     DEFAULT NULL COMMENT '逻辑删除时间',
+    `updated_at` datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
     `updated_by` bigint(20)           DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB

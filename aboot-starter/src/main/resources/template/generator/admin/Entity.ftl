@@ -15,6 +15,9 @@ import javax.validation.constraints.*;
 import java.time.*;
 import java.sql.Timestamp;
 </#if>
+<#if hasLocalDate || hasLocalTime || hasLocalDateTime>
+import java.time.*;
+</#if>
 <#if hasBigDecimal>
 import java.math.BigDecimal;
 </#if>

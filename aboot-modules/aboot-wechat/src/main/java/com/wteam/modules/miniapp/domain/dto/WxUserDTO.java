@@ -14,8 +14,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-
+import java.time.LocalDateTime;
 
 /**
 * 微信用户 DTO类.
@@ -47,13 +46,13 @@ public class WxUserDTO implements Serializable {
     /** 语言 */
     private String language;
     /** 创建时间 */
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
     /** 创建人 */
     private Long createdBy;
     /** 逻辑删除 0:正常 1:已删除 */
-    private Timestamp deletedAt;
+    private LocalDateTime deletedAt;
     /** 修改时间 */
-    private Timestamp updatedAt;
+    private LocalDateTime updatedAt;
     /** 修改人 */
     private Long editor;
 }

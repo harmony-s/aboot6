@@ -11,7 +11,7 @@ package com.wteam.domain.dto;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * 操作日志
@@ -49,5 +49,5 @@ public class LogSmallDTO implements Serializable {
     /**
      * 创建日期
      */
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 }

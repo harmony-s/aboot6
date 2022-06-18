@@ -52,10 +52,10 @@ CREATE TABLE `wx_pay_config`
     `mch_key`    VARCHAR(255) NOT NULL COMMENT '微信支付商户密钥',
     `mch_path`   VARCHAR(255) NULL     DEFAULT NULL COMMENT 'apiclient_cert.p12文件的绝对路径，或者如果放在项目中，请以classpath:开头指定',
     `remark`     VARCHAR(255) NULL     DEFAULT NULL COMMENT '备注',
-    `created_at` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `created_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `created_by` bigint(20)   NOT NULL DEFAULT '0' COMMENT '创建人',
-    `deleted_at` timestamp    NULL     DEFAULT NULL COMMENT '逻辑删除时间',
-    `updated_at` timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    `deleted_at` datetime     NULL     DEFAULT NULL COMMENT '逻辑删除时间',
+    `updated_at` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
     `updated_by` bigint(20)            DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`id`)
 ) COMMENT ='微信支付配置' COLLATE = utf8mb4_general_ci
@@ -77,10 +77,10 @@ CREATE TABLE `pay_log`
     `request_ip`       VARCHAR(32)  NULL     DEFAULT NULL COMMENT '请求ip' COLLATE 'utf8mb4_general_ci',
     `address`          VARCHAR(255) NULL     DEFAULT NULL COMMENT '请求地址' COLLATE 'utf8mb4_general_ci',
     `browser`          VARCHAR(255) NULL     DEFAULT NULL COMMENT '浏览器' COLLATE 'utf8mb4_general_ci',
-    `created_at`       TIMESTAMP    NOT NULL DEFAULT current_timestamp() COMMENT '创建时间',
+    `created_at`       datetime     NOT NULL DEFAULT current_timestamp() COMMENT '创建时间',
     `created_by`       BIGINT(20)   NOT NULL DEFAULT '0' COMMENT '创建人',
-    `deleted_at`       TIMESTAMP    NULL     DEFAULT NULL COMMENT '逻辑删除时间',
-    `updated_at`       TIMESTAMP    NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT '修改时间',
+    `deleted_at`       datetime     NULL     DEFAULT NULL COMMENT '逻辑删除时间',
+    `updated_at`       datetime     NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT '修改时间',
     `updated_by`       BIGINT(20)   NULL     DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`id`) USING BTREE
 )

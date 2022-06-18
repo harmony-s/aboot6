@@ -28,7 +28,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.criteria.Predicate;
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -250,7 +249,7 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRep
                 Objects.requireNonNull(this.entityInformation.getIdAttribute()).getName());
         return this.entityManager
                 .createQuery(sb)
-                .setParameter(1,Timestamp.valueOf(LocalDateTime.now()))
+                .setParameter(1,LocalDateTime.now())
                 .setParameter(2,id)
                 .executeUpdate();
     }
@@ -269,7 +268,7 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRep
         if (!entities.iterator().hasNext()) {
             return -1;
         }
-        String queryString= QueryUtils.getQueryString("update %s x set deletedAt ="+Timestamp.valueOf(LocalDateTime.now()), entityInformation.getEntityName());
+        String queryString= QueryUtils.getQueryString("update %s x set deletedAt ="+LocalDateTime.now(), entityInformation.getEntityName());
 
         Iterator<T> iterator = entities.iterator();
 

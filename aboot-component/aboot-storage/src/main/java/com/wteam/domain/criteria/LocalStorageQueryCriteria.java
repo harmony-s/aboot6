@@ -12,8 +12,7 @@ import com.wteam.annotation.Query;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.sql.Timestamp;
-
+import java.time.LocalDateTime;
 
 /**
 * 存储 搜索类.
@@ -29,9 +28,9 @@ public class LocalStorageQueryCriteria{
 
     @ApiModelProperty("操作时间 >大于")
     @Query(propName = "createdAt",type = Query.Type.GREATER_THAN)
-    private Timestamp greatTime;
+    private LocalDateTime greatTime;
 
     @ApiModelProperty("操作时间 <小于")
     @Query(propName = "createdAt",type = Query.Type.LESS_THAN)
-    private Timestamp lessTime;
+    private LocalDateTime lessTime;
 }

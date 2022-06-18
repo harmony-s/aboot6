@@ -42,7 +42,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -126,7 +125,7 @@ public class WxAuthController {
         }
         String openId = wxUser.getOpenId();
         User user =new User();
-        user.setLastLoginTime(Timestamp.valueOf(LocalDateTime.now()));
+        user.setLastLoginTime(LocalDateTime.now());
 
         //判断是否注册
         if (wxUser.getUid()==null) {

@@ -13,7 +13,7 @@ import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -48,7 +48,7 @@ public class JwtUser implements UserDetails {
     private boolean enabled;
 
     @JsonIgnore
-    private Timestamp lastPasswordResetDate;
+    private LocalDateTime lastPasswordResetDate;
 
     @JsonIgnore
     private final Collection<GrantedAuthority> authorities;
@@ -93,7 +93,7 @@ public class JwtUser implements UserDetails {
         this.authorities = authorities;
     }
 
-    public JwtUser(Long id, String username, String nickname, String password, Integer sex, String avatar, String email, String phone, Integer loginType, boolean enabled, Timestamp lastPasswordResetDate, Collection<GrantedAuthority> authorities) {
+    public JwtUser(Long id, String username, String nickname, String password, Integer sex, String avatar, String email, String phone, Integer loginType, boolean enabled, LocalDateTime lastPasswordResetDate, Collection<GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.nickname = nickname;

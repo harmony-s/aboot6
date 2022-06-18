@@ -12,8 +12,7 @@ import com.wteam.annotation.Query;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-
+import java.time.LocalDateTime;
 
 /**
  * @author mission
@@ -36,7 +35,5 @@ public class DictDTO implements Serializable {
     @Query(type = Query.Type.INNER_LIKE)
     private String remark;
 
-
-
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 }

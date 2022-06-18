@@ -90,7 +90,6 @@ public class AuthController {
         if (StringUtils.isBlank(loginUser.getVcode()) || !loginUser.getVcode().equalsIgnoreCase(code)) {
             throw new BadRequestException("验证码错误");
         }
-        log.info(loginUser.getUsername());
 
         //密码解密
         RSA rsa = new RSA(privateKey, null);

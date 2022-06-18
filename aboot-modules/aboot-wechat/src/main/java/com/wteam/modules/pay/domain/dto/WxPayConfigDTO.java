@@ -12,8 +12,7 @@ package com.wteam.modules.pay.domain.dto;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-
+import java.time.LocalDateTime;
 
 /**
 * 微信支付配置 DTO类.
@@ -35,6 +34,6 @@ public class WxPayConfigDTO implements Serializable {
     /** 注备 */
     private String remark;
     /** 创建时间 */
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
 }

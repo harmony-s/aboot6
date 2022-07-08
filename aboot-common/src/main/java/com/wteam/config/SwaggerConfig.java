@@ -23,6 +23,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -38,6 +39,9 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
@@ -77,8 +81,12 @@ public class SwaggerConfig {
 				.paths(Predicates.not(regex("/swagger-mg-ui/.*")))
 				.build()
 				.securitySchemes(securitySchemes())
-				.securityContexts(securityContexts());
-
+				.securityContexts(securityContexts())
+				.directModelSubstitute(LocalTime.class, String.class)
+				.directModelSubstitute(LocalDate.class, String.class)
+				.directModelSubstitute(LocalDateTime.class, String.class)
+				.directModelSubstitute(Sort.class, String.class)
+				;
 	}
 
 	private ApiInfo apiInfo() {

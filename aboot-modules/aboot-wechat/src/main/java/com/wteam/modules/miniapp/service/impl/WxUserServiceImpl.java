@@ -158,7 +158,6 @@ public class WxUserServiceImpl implements WxUserService {
             WxMaJscode2SessionResult sessionInfo = maService.jsCode2SessionInfo(wxLoginDTO.getCode());
             wxUser = findByOpenId(sessionInfo.getOpenid());
             String sessionKey = sessionInfo.getSessionKey();
-            log.info(sessionKey);
             wxUser.setAppId(wxLoginDTO.getAppid());
             wxUser.setNickName("用户" + RandomUtil.randomNumbers(6));
 
@@ -177,7 +176,7 @@ public class WxUserServiceImpl implements WxUserService {
                     //头像保存到本地
                     URL url = new URL(userInfo.getAvatarUrl());
                     InputStream stream = URLUtil.getStream(url);
-                    String fileName = IdUtil.simpleUUID() + ".jpg";
+                    String fileName = "openId_" + wxUser.getOpenId() + ".jpg";
                     String dest = basePath() + "avatar" + File.separator + fileName;
                     FileUtil.writeFromStream(stream, dest);
                     userInfo.setAvatarUrl(StringUtils.join(fileUrlPrefix(), "avatar", "/", fileName));

@@ -2,6 +2,7 @@ package com.wteam.utils;
 
 import cn.hutool.core.io.IoUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.util.CollectionUtils;
@@ -46,7 +47,7 @@ public class ExcelUtil {
         cellStyle.setAlignment(HorizontalAlignment.CENTER);
         cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 
-        write2Sheet(sheet, list, cellStyle, null, 0, 0, null);
+        write2Sheet(sheet, list, cellStyle, cellStyle, 0, 0, null, null);
         //response为HttpServletResponse对象
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
         //file.xls是弹出下载对话框的文件名，不能为中文，中文请自行编码
@@ -59,19 +60,25 @@ public class ExcelUtil {
         IoUtil.close(out);
     }
 
+    /**
+     * 每个sheet的写入
+     *
+     * @param pattern 日期格式
+     */
     public static void write2Sheet(XSSFSheet sheet,
                                    List<Map<String, Object>> list,
                                    XSSFCellStyle titleCellStyle,
                                    XSSFCellStyle contentCellStyle,
                                    int firstRow,
                                    int firstColumn,
-                                   String pattern) {
+                                   String pattern,
+                                   Boolean onAutoColumnSize) {
         if (CollectionUtils.isEmpty(list)) {
             return;
         }
         //时间格式默认"yyyy-MM-dd"
         if (StringUtils.isEmpty(pattern)) {
-            pattern = "yyyy-MM-dd HH:mm:ss";
+            pattern = "yyyy/MM/dd HH:mm:ss";
         }
         // 产生表格标题行
         XSSFRow row = sheet.getRow(firstRow);
@@ -79,14 +86,16 @@ public class ExcelUtil {
             row = sheet.createRow(firstRow);
         }
         Set<String> keys = list.get(0).keySet();
-        Iterator<String> it1 = keys.iterator();
-        int c = firstColumn;   //标题列数
-        while (it1.hasNext()) {
-            XSSFCell cell = row.createCell(c);
-            XSSFRichTextString text = new XSSFRichTextString(it1.next());
-            cell.setCellStyle(titleCellStyle);
-            cell.setCellValue(text);
-            c++;
+        if (titleCellStyle != null) {
+            Iterator<String> it1 = keys.iterator();
+            int c = firstColumn;   //标题列数
+            while (it1.hasNext()) {
+                XSSFCell cell = row.createCell(c);
+                XSSFRichTextString text = new XSSFRichTextString(it1.next());
+                cell.setCellStyle(titleCellStyle);
+                cell.setCellValue(text);
+                c++;
+            }
         }
         // 遍历集合数据，产生数据行
         Iterator<Map<String, Object>> it = list.iterator();
@@ -108,7 +117,7 @@ public class ExcelUtil {
                         continue;
                     }
                     Object value = map.get(key);
-                    XSSFCell cell = row.createCell(cellNum);
+                    XSSFCell cell = row.getCell(cellNum, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
                     if (contentCellStyle != null) {
                         cell.setCellStyle(contentCellStyle);
                     }
@@ -178,7 +187,9 @@ public class ExcelUtil {
             }
         }
         // 设定自动宽度
-        setSizeColumn(sheet, firstRow, keys.size());
+        if (BooleanUtils.isTrue(onAutoColumnSize)) {
+            setSizeColumn(sheet, firstRow, keys.size());
+        }
     }
 
     /**

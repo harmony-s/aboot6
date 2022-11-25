@@ -1,11 +1,3 @@
-/*
- * Copyright © 2019-2020  Whale Cloud, Inc. All Rights Reserved.
- *
- * Notice: Whale Cloud Inc copyrights this specification.
- * No part of this specification may be reproduced in any form or means,
- * without the prior written consent of Whale Cloud Inc.
- *
- */
 package ${package}.service;
 
 import ${package}.domain.${className};
@@ -23,7 +15,7 @@ import java.util.*;
  * @author ${author}
  * @since ${date}
  */
-public interface ${className}Service{
+public interface ${className}Service {
 
     /**
      * 查询数据分页

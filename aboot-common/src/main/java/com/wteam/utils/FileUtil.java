@@ -108,8 +108,35 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
         if ((filename != null) && (filename.length() > 0)) {
             int dot = filename.lastIndexOf('.');
             if ((dot > -1) && (dot < (filename.length()))) {
+                // 剔除url特殊字符,避免浏览器访问时错误解析,造成访问不到的错误
                 filename = filename
-                        .substring(0, dot);
+                        .substring(0, dot)
+                        .replaceAll("\\.","")
+                        .replaceAll("#", "")
+                        .replaceAll("-", "")
+                        .replaceAll("\\[", "")
+                        .replaceAll("\\]", "")
+                        .replaceAll(" ", "")
+                        .replaceAll("\"", "")
+                        .replaceAll("\\'", "")
+                        .replaceAll("<", "")
+                        .replaceAll(">", "")
+                        .replaceAll("%", "")
+                        .replaceAll("\\{", "")
+                        .replaceAll("\\}", "")
+                        .replaceAll("\\|", "")
+                        .replaceAll("\\^", "")
+                        .replaceAll("&", "")
+                        .replaceAll("\\(", "")
+                        .replaceAll("\\)", "")
+                        .replaceAll("\\+", "")
+                        .replaceAll(",", "")
+                        .replaceAll("/", "")
+                        .replaceAll(":", "")
+                        .replaceAll(";", "")
+                        .replaceAll("=", "")
+                        .replaceAll("\\?", "")
+                        .replaceAll("@", "");
                 return filename.length() > 20 ? filename.substring(0, 20) : filename;
             }
         }

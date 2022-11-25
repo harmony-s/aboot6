@@ -1,11 +1,3 @@
-/*
- * Copyright © 2019-2020  Whale Cloud, Inc. All Rights Reserved.
- *
- * Notice: Whale Cloud Inc copyrights this specification.
- * No part of this specification may be reproduced in any form or means,
- * without the prior written consent of Whale Cloud Inc.
- *
- */
 package ${package}.service.impl;
 
 import ${package}.service.${className}Service;
@@ -68,11 +60,10 @@ public class ${className}ServiceImpl implements ${className}Service {
         return result;
     }
 
+    //@Cacheable(key = "'id:' + #p0")
     @Override
-    // @Cacheable(key = "'id:' + #p0")
     public ${className}DTO findDTOById(${pkColumnType} ${pkChangeColName}) {
-        ${className} ${changeClassName} = ${changeClassName}Repository.findById(${pkChangeColName}).orElse(null);
-        ValidUtil.notNull(${changeClassName}, ${className}.ENTITY_NAME, "${pkChangeColName}", ${pkChangeColName});
+        ${className} ${changeClassName} = ${changeClassName}Repository.orElseThrow(() -> new BadRequestException("${tableComment}不存在!请刷新重试!"));
         ${className}DTO result = ${changeClassName}Mapper.toDto(${changeClassName});
         return result;
     }
@@ -91,7 +82,7 @@ public class ${className}ServiceImpl implements ${className}Service {
         <#list columns as column>
             <#if column.columnKey = 'UNI'>
         if (${changeClassName}Repository.findBy${column.capitalColumnName}(resources.get${column.capitalColumnName}()) != null) {
-           throw new EntityExistException(${className}.ENTITY_NAME,"${column.columnName}",resources.get${column.capitalColumnName}());
+           throw new EntityExistException(${className}.ENTITY_NAME, "${column.columnName}", resources.get${column.capitalColumnName}());
         }
             </#if>
         </#list>
@@ -99,12 +90,11 @@ public class ${className}ServiceImpl implements ${className}Service {
         return ${changeClassName}Mapper.toDto(${changeClassName}Repository.save(resources));
     }
 
+    //@CacheEvict(key = "'id:' + #p0.id")
     @Override
-    // @CacheEvict(key = "'id:' + #p0.id")
     @Transactional(rollbackFor = Exception.class)
     public void update(${className} resources) {
-        ${className} ${changeClassName} = ${changeClassName}Repository.findById(resources.get${pkCapitalColName}()).orElse(null);
-        ValidUtil.notNull(${changeClassName}, ${className}.ENTITY_NAME, "id", resources.get${pkCapitalColName}());
+        ${className} ${changeClassName} = ${changeClassName}Repository.findById(resources.get${pkCapitalColName}()).orElseThrow(() -> new BadRequestException("${tableComment}不存在!请刷新重试!"));
 
     <#if hasUNI>
         ${className} ${changeClassName}1 = null;

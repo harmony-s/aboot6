@@ -121,7 +121,7 @@ public class WxAuthController {
         WxUser wxUser = (WxUser) redisUtils.get(wxLoginDTO.getCode());
         if (wxUser == null) {
             wxUser = wxUserService.load(wxLoginDTO);
-            redisUtils.set(wxLoginDTO.getCode(),wxUser);
+            redisUtils.set("wxLogin:" + wxLoginDTO.getCode(), wxUser, 604800000);
         }
         String openId = wxUser.getOpenId();
         User user =new User();

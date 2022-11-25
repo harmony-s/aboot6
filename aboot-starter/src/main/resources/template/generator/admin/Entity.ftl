@@ -1,21 +1,9 @@
-/*
- * Copyright © 2019-2020  Whale Cloud, Inc. All Rights Reserved.
- *
- * Notice: Whale Cloud Inc copyrights this specification.
- * No part of this specification may be reproduced in any form or means,
- * without the prior written consent of Whale Cloud Inc.
- *
- */
 package ${package}.domain;
 
 <#if isNotNullColumns??>
 import javax.validation.constraints.*;
 </#if>
-<#if hasTimestamp>
-import java.time.*;
-import java.sql.Timestamp;
-</#if>
-<#if hasLocalDate || hasLocalTime || hasLocalDateTime>
+<#if hasTimestamp || hasLocalDate || hasLocalTime || hasLocalDateTime>
 import java.time.*;
 </#if>
 <#if hasBigDecimal>
@@ -26,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import org.hibernate.annotations.*;
 </#if>
+import lombok.*;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.Where;
 import javax.persistence.*;
 import com.wteam.base.BaseCons;
@@ -33,8 +23,6 @@ import com.wteam.base.BaseEntity;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * ${tableComment} 持久类.
@@ -42,12 +30,16 @@ import lombok.Setter;
  * @author ${author}
  * @since ${date}
  */
-@Entity
+@Accessors(chain = true)
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@Entity
 @Where(clause = BaseCons.SOFT_DELETE)
-@Table(name="${tableName}")
-public class ${className} extends BaseEntity{
+@Table(name = "${tableName}")
+public class ${className} extends BaseEntity {
 
     public final static String ENTITY_NAME = "${tableComment}";
 
@@ -60,7 +52,9 @@ public class ${className} extends BaseEntity{
      column.changeColumnName = 'updatedAt'||
      column.changeColumnName = 'updatedBy'><#else>
     <#if column.remark != ''>
-    /** ${column.remark} */
+    /**
+     * ${column.remark}
+     */
     @ApiModelProperty("${column.remark}")
     </#if>
     <#if column.columnKey = 'PRI'>
@@ -94,7 +88,7 @@ public class ${className} extends BaseEntity{
     </#if>
     </#list>
 </#if>
-    public void copy(${className} source){
-        BeanUtil.copyProperties(source,this, CopyOptions.create().setIgnoreNullValue(true));
+    public void copy(${className} source) {
+        BeanUtil.copyProperties(source, this, CopyOptions.create().setIgnoreNullValue(true));
     }
 }

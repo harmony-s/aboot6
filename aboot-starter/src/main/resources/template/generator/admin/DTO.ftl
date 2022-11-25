@@ -1,18 +1,7 @@
-/*
- * Copyright © 2019-2020  Whale Cloud, Inc. All Rights Reserved.
- *
- * Notice: Whale Cloud Inc copyrights this specification.
- * No part of this specification may be reproduced in any form or means,
- * without the prior written consent of Whale Cloud Inc.
- *
- */
 package ${package}.domain.dto;
 
 import lombok.Data;
-<#if hasTimestamp>
-import java.sql.Timestamp;
-</#if>
-<#if hasLocalDate || hasLocalTime || hasLocalDateTime>
+<#if hasTimestamp || hasLocalDate || hasLocalTime || hasLocalDateTime>
 import java.time.*;
 </#if>
 <#if hasBigDecimal>
@@ -41,12 +30,16 @@ public class ${className}DTO implements Serializable {
     column.changeColumnName = 'updatedAt'||
     column.changeColumnName = 'updatedBy'><#else>
     <#if column.remark != ''>
-    /** ${column.remark} */
+    /**
+     * ${column.remark}
+     */
     @ApiModelProperty("${column.remark}")
     </#if>
     <#if column.columnKey = 'PRI'>
     <#if !auto && pkColumnType = 'Long'>
-    /** 防止精度丢失 */
+    /**
+     * 防止精度丢失
+     */
     @JsonSerialize(using = ToStringSerializer.class)
     </#if>
     </#if>

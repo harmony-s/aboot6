@@ -1,11 +1,3 @@
-/*
- * Copyright © 2019-2020  Whale Cloud, Inc. All Rights Reserved.
- *
- * Notice: Whale Cloud Inc copyrights this specification.
- * No part of this specification may be reproduced in any form or means,
- * without the prior written consent of Whale Cloud Inc.
- *
- */
 package ${package}.web;
 
 import com.wteam.annotation.permission.PermissionGroup;
@@ -38,7 +30,7 @@ import com.wteam.aboot.aop.Dict;
 @Api(value = "${tableComment}Controller", tags = {"新增：${tableComment}操作"})
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/${changeClassName}")
+@RequestMapping("/api/${changeClassName}")
 @PermissionGroup(value = "${upperCaseClassName}", aliasPrefix = "${tableComment}")
 public class ${className}Controller {
 
@@ -51,7 +43,7 @@ public class ${className}Controller {
     @ApiOperation(value = "查询${tableComment}分页")
     @GetMapping(value = "/page")
     @PreAuthorize("@R.check('${upperCaseClassName}:all', '${upperCaseClassName}:list')")
-    public R get${className}s(${className}QueryCriteria criteria, Pageable pageable) {
+    public R page(${className}QueryCriteria criteria, Pageable pageable) {
         return R.ok(${changeClassName}Service.queryAll(criteria, pageable));
     }
 
@@ -87,7 +79,7 @@ public class ${className}Controller {
     @ApiOperation(value = "删除${tableComment}")
     @PostMapping(value = "/del")
     @PreAuthorize("@R.check('${upperCaseClassName}:all', '${upperCaseClassName}:del')")
-    public R delete (@RequestBody Set<${pkColumnType}> ids) {
+    public R delete(@RequestBody Set<${pkColumnType}> ids) {
         ${changeClassName}Service.deleteAll(ids);
         return R.ok();
     }

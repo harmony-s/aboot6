@@ -177,7 +177,7 @@ DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user`
 (
     `id`                       BIGINT(20)   NOT NULL AUTO_INCREMENT COMMENT 'ID',
-    `username`                 VARCHAR(64)  NOT NULL COMMENT '用户名',
+    `username`                 VARCHAR(64)  NOT NULL COMMENT '用户名' COLLATE 'utf8mb4_bin',
     `nickname`                 VARCHAR(64)  NULL     DEFAULT NULL COMMENT '昵称',
     `password`                 VARCHAR(128) NOT NULL COMMENT '密码',
     `login_type`               TINYINT(1)   NOT NULL DEFAULT '0' COMMENT '用户登录类型',

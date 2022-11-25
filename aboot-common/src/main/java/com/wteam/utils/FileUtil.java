@@ -24,8 +24,8 @@ import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static com.wteam.utils.PathUtil.basePath;
 
@@ -191,15 +191,16 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
      * 去除违规字符
      */
     public static File upload(MultipartFile file, String filePath) {
-        Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmssS");
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMddHHmmssS");
+
         String name = getFileNameNoEx(file.getOriginalFilename());
         // 去除违规字符: "."," ","#"
         name = name.replaceAll("\\.", "")
                 .replaceAll(" ", "")
                 .replaceAll("#", "");
         String suffix = getExtensionName(file.getOriginalFilename());
-        String nowStr = "-" + format.format(date);
+        String nowStr = "-" + format.format(now);
         try {
             String fileName = name + nowStr + "." + suffix;
             String path = filePath + fileName;

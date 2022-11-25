@@ -7,12 +7,10 @@
  */
 package com.wteam.modules.monitor.service.impl;
 
-
 import com.wteam.modules.monitor.domain.Visits;
 import com.wteam.modules.monitor.repositiory.VisitsRepository;
 import com.wteam.modules.monitor.service.VisitsService;
 import com.wteam.repository.LogRepository;
-import com.wteam.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -45,7 +43,7 @@ public class VisitsServiceImpl implements VisitsService {
         Visits visits=visitsRepository.findByDate(localDate.toString());
         if (visits == null) {
             visits =new Visits();
-            visits.setWeekDay(StringUtils.getWeekDay());
+            visits.setWeekDay(localDate.getDayOfWeek().name());
             visits.setPvCounts(1L);
             visits.setIpCounts(1L);
             visits.setDate(localDate.toString());

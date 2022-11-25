@@ -8,7 +8,6 @@
  */
 package com.wteam.modules.security.util;
 
-import cn.hutool.core.date.DateUtil;
 import com.wteam.domain.vo.JwtUser;
 import com.wteam.modules.security.config.JwtProperties;
 import com.wteam.utils.RedisUtils;
@@ -153,11 +152,8 @@ public class JwtTokenUtil implements InitializingBean {
 	public void checkRenewal(String token) {
 		// 判断是否续期token,计算token的过期时间
 		long time = redisUtils.getExpire(jwtProperties.getOnlineKey() + token) * 1000;
-		Date expireDate = DateUtil.offsetMillisecond(new Date(), (int)time);
-		// 判断当前时间与过期时间的时间差
-		long differ = expireDate.getTime() - System.currentTimeMillis();
 		// 如果在续期检查的范围内，则续期
-		if (differ <= jwtProperties.getDetect()) {
+		if (time <= jwtProperties.getDetect()) {
 			long renew = time + jwtProperties.getRenew();
 			redisUtils.expire(jwtProperties.getOnlineKey() + token, renew, TimeUnit.MILLISECONDS);
 		}

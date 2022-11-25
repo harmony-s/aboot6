@@ -8,7 +8,6 @@
  */
 package com.wteam.utils;
 
-
 import eu.bitwalker.useragentutils.Browser;
 import eu.bitwalker.useragentutils.OperatingSystem;
 import eu.bitwalker.useragentutils.UserAgent;
@@ -22,8 +21,6 @@ import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -274,21 +271,6 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         str.append("/");
         return str.toString();
     }
-    /**
-     * 获得当天是周几
-     */
-    public static String getWeekDay() {
-        String[] weekDays = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-
-        int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
-        if (w < 0) {
-            w = 0;
-        }
-        return weekDays[w];
-    }
-
 
     /**
      * 过滤emoji

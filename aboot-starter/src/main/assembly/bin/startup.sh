@@ -14,7 +14,7 @@
 #======================================================================
 
 # 项目名称
-APPLICATION="aboot-starter-0.0.6"
+APPLICATION="aboot-demo"
 
 # 项目启动jar包名称
 APPLICATION_JAR="${APPLICATION}.jar"
@@ -82,7 +82,7 @@ echo "${STARTUP_LOG}" >> ${LOG_STARTUP_PATH}
 # -XX:MaxMetaspaceSize=320m:限制Metaspace增长的上限，防止因为某些情况导致Metaspace无限的使用本地内存，影响到其他程序
 # -XX:-OmitStackTraceInFastThrow:解决重复异常不打印堆栈信息问题
 #==========================================================================================
-JAVA_OPT="-server -Xms64m -Xmx128m -Xmn64m -Xss256k -XX:CompressedClassSpaceSize=64m -XX:MetaspaceSize=64m -XX:MaxMetaspaceSize=128m -XX:ParallelGCThreads=2"
+JAVA_OPT="-server -Xms1024m -Xmx2048m -Xmn64m -Xss256k -XX:CompressedClassSpaceSize=64m -XX:MetaspaceSize=64m -XX:MaxMetaspaceSize=128m -XX:ParallelGCThreads=2"
 JAVA_OPT="${JAVA_OPT} -XX:-OmitStackTraceInFastThrow"
 
 #=======================================================

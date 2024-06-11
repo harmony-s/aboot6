@@ -18,9 +18,9 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.IdUtil;
 </#if>
 import com.wteam.utils.*;
+import com.wteam.domain.vo.PageModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.cache.annotation.*;
@@ -48,24 +48,22 @@ public class ${className}ServiceImpl implements ${className}Service {
     private final RedisUtils redisUtils;
 
     @Override
-    public Map<String, Object> queryAll(${className}QueryCriteria criteria, Pageable pageable) {
+    public PageModel<${className}DTO> queryAll(${className}QueryCriteria criteria, Pageable pageable) {
         Page<${className}> page = ${changeClassName}Repository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelper.andPredicate(root, criteria, criteriaBuilder), pageable);
-        Page<${className}DTO> result = page.map(${changeClassName}Mapper::toDto);
-        return PageUtil.toPage(result);
+        return PageModel.toPage(page.map(${changeClassName}Mapper::toDto));
     }
 
     @Override
-    public List<${className}DTO> queryAll(${className}QueryCriteria criteria, Sort sort) {
-        List<${className}DTO> result = ${changeClassName}Mapper.toDto(${changeClassName}Repository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelper.andPredicate(root,criteria,criteriaBuilder), sort));
-        return result;
+    public List<${className}DTO> queryAll(${className}QueryCriteria criteria) {
+        return ${changeClassName}Mapper.toDto(${changeClassName}Repository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelper.andPredicate(root,criteria,criteriaBuilder)));
     }
 
-    //@Cacheable(key = "'id:' + #p0")
     @Override
+    @Cacheable(key = "'id:' + #p0")
     public ${className}DTO findDTOById(${pkColumnType} ${pkChangeColName}) {
-        ${className} ${changeClassName} = ${changeClassName}Repository.orElseThrow(() -> new BadRequestException("${tableComment}不存在!请刷新重试!"));
-        ${className}DTO result = ${changeClassName}Mapper.toDto(${changeClassName});
-        return result;
+        ${className} ${changeClassName} = ${changeClassName}Repository.findById(${pkChangeColName}).orElse(null);
+        ValidUtil.notNull(${changeClassName}, ${className}.ENTITY_NAME, "${pkChangeColName}", ${pkChangeColName});
+        return ${changeClassName}Mapper.toDto(${changeClassName});
     }
 
     @Override
@@ -90,11 +88,12 @@ public class ${className}ServiceImpl implements ${className}Service {
         return ${changeClassName}Mapper.toDto(${changeClassName}Repository.save(resources));
     }
 
-    //@CacheEvict(key = "'id:' + #p0.id")
     @Override
+    @CacheEvict(key = "'id:' + #p0.id")
     @Transactional(rollbackFor = Exception.class)
     public void update(${className} resources) {
-        ${className} ${changeClassName} = ${changeClassName}Repository.findById(resources.get${pkCapitalColName}()).orElseThrow(() -> new BadRequestException("${tableComment}不存在!请刷新重试!"));
+        ${className} ${changeClassName} = ${changeClassName}Repository.findById(resources.get${pkCapitalColName}()).orElse(null);
+        ValidUtil.notNull(${changeClassName}, ${className}.ENTITY_NAME, "id", resources.get${pkCapitalColName}());
 
     <#if hasUNI>
         ${className} ${changeClassName}1 = null;
@@ -116,8 +115,8 @@ public class ${className}ServiceImpl implements ${className}Service {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteAll(Set<${pkColumnType}> ids) {
+        redisUtils.delByKeys("${changeClassName}::id:", ids);
         ${changeClassName}Repository.logicDeleteInBatchById(ids);
-        // redisUtils.delByKeys("${changeClassName}::id:", ids);
     }
 
     @Override

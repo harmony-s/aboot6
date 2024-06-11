@@ -2,14 +2,15 @@ package ${package}.web;
 
 import com.wteam.annotation.permission.PermissionGroup;
 import com.wteam.domain.vo.R;
+import com.wteam.domain.vo.PageModel;
 import ${package}.domain.${className};
+import ${package}.domain.dto.${className}DTO;
 import ${package}.service.${className}Service;
 import ${package}.domain.criteria.${className}QueryCriteria;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -39,35 +40,35 @@ public class ${className}Controller {
     <#if hasDict>
     @Dict({<#if dicts??><#list dicts as dict>"${dict}"<#if dict?index != dicts?size-1 >,</#if> </#list></#if>})
     </#if>
-    //@Log("查询${tableComment}分页")
-    @ApiOperation(value = "查询${tableComment}分页")
+    //@Log("管理端：查询${tableComment}分页")
+    @ApiOperation(value = "管理端：查询${tableComment}分页")
     @GetMapping(value = "/page")
     @PreAuthorize("@R.check('${upperCaseClassName}:all', '${upperCaseClassName}:list')")
-    public R page(${className}QueryCriteria criteria, Pageable pageable) {
+    public R<PageModel<${className}DTO>> get${className}s(${className}QueryCriteria criteria, Pageable pageable) {
         return R.ok(${changeClassName}Service.queryAll(criteria, pageable));
     }
 
     <#if hasDict>
     @Dict({<#if dicts??><#list dicts as dict>"${dict}"<#if dict?index != dicts?size-1 >,</#if> </#list></#if>})
     </#if>
-    //@Log("查询${tableComment}详情")
-    @ApiOperation(value = "查询${tableComment}详情")
+    //@Log("管理端：查询${tableComment}详情")
+    @ApiOperation(value = "管理端：查询${tableComment}详情")
     @GetMapping(value = "/get/{${pkChangeColName}}")
     @PreAuthorize("@R.check('${upperCaseClassName}:all', '${upperCaseClassName}:list')")
-    public R get(@PathVariable ${pkColumnType} ${pkChangeColName}) {
+    public R<${className}DTO> get(@PathVariable ${pkColumnType} ${pkChangeColName}) {
         return R.ok(${changeClassName}Service.findDTOById(${pkChangeColName}));
     }
 
-    //@Log("新增${tableComment}")
-    @ApiOperation(value = "新增${tableComment}")
+    //@Log("管理端：新增${tableComment}")
+    @ApiOperation(value = "管理端：新增${tableComment}")
     @PostMapping(value = "/add")
     @PreAuthorize("@R.check('${upperCaseClassName}:all', '${upperCaseClassName}:add')")
     public R create(@Validated(${className}.Create.class) @RequestBody ${className} resources) {
         return R.ok(${changeClassName}Service.create(resources));
     }
 
-    //@Log("修改${tableComment}")
-    @ApiOperation(value = "修改${tableComment}")
+    //@Log("管理端：修改${tableComment}")
+    @ApiOperation(value = "管理端：修改${tableComment}")
     @PostMapping(value = "/edit")
     @PreAuthorize("@R.check('${upperCaseClassName}:all', '${upperCaseClassName}:edit')")
     public R update(@Validated(${className}.Update.class) @RequestBody ${className} resources) {
@@ -75,8 +76,8 @@ public class ${className}Controller {
         return R.ok();
     }
 
-    //@Log("删除${tableComment}")
-    @ApiOperation(value = "删除${tableComment}")
+    //@Log("管理端：删除${tableComment}")
+    @ApiOperation(value = "管理端：删除${tableComment}")
     @PostMapping(value = "/del")
     @PreAuthorize("@R.check('${upperCaseClassName}:all', '${upperCaseClassName}:del')")
     public R delete(@RequestBody Set<${pkColumnType}> ids) {
@@ -84,12 +85,12 @@ public class ${className}Controller {
         return R.ok();
     }
 
-    //@Log("导出数据")
-    @ApiOperation("导出数据")
+    //@Log("管理端：导出数据")
+    @ApiOperation("管理端：导出数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@R.check('${upperCaseClassName}:all', '${upperCaseClassName}:list')")
-    public void download(HttpServletResponse response, ${className}QueryCriteria criteria, Sort sort) throws IOException {
-        ${changeClassName}Service.download(${changeClassName}Service.queryAll(criteria, sort), response);
+    public void download(HttpServletResponse response, ${className}QueryCriteria criteria) throws IOException {
+        ${changeClassName}Service.download(${changeClassName}Service.queryAll(criteria), response);
     }
 
 }

@@ -1,10 +1,10 @@
 ## 配置端口号
 server:
-  port: 8800
+  port: 8806
 # 文件存储路径
 file:
   url-prefix: /file/ #"/"结尾 自定义上传时字段无意义
-  base-path: D:\projectdev\aboot6
+  base-path: D:\jingyun\BG\202406-aboot-demo\file
   maxSize: 200   # 文件大小 /M
 
 spring:
@@ -14,9 +14,9 @@ spring:
       max-request-size: 1024MB
   datasource:
     ## 配置数据源
-    url: jdbc:log4jdbc:mysql://127.0.0.1:3306/aboot6_beta?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:log4jdbc:mysql://127.0.0.1:3306/aboot_demo?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
-    password: root
+    password: 123456
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     platform: mysql
     type: com.zaxxer.hikari.HikariDataSource
@@ -56,7 +56,7 @@ spring:
 
   #配置 redis
   redis:
-    database: 2
+    database: 5
     host: localhost
     port: 6379
     password:

@@ -3,7 +3,7 @@ package ${package}.domain;
 <#if isNotNullColumns??>
 import javax.validation.constraints.*;
 </#if>
-<#if hasTimestamp || hasLocalDate || hasLocalTime || hasLocalDateTime>
+<#if hasTimestamp || hasLocalDate || hasLocalDateTime>
 import java.time.*;
 </#if>
 <#if hasBigDecimal>
@@ -52,9 +52,7 @@ public class ${className} extends BaseEntity {
      column.changeColumnName = 'updatedAt'||
      column.changeColumnName = 'updatedBy'><#else>
     <#if column.remark != ''>
-    /**
-     * ${column.remark}
-     */
+    /** ${column.remark} */
     @ApiModelProperty("${column.remark}")
     </#if>
     <#if column.columnKey = 'PRI'>

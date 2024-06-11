@@ -10,7 +10,7 @@
 #======================================================================
 
 # 项目名称
-APPLICATION="aboot-starter-0.0.6"
+APPLICATION="aboot-demo"
 
 # 停服
 echo stop ${APPLICATION} Application...

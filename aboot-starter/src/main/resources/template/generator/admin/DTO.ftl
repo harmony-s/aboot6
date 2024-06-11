@@ -1,7 +1,7 @@
 package ${package}.domain.dto;
 
 import lombok.Data;
-<#if hasTimestamp || hasLocalDate || hasLocalTime || hasLocalDateTime>
+<#if hasTimestamp || hasLocalDate || hasLocalDateTime>
 import java.time.*;
 </#if>
 <#if hasBigDecimal>
@@ -28,11 +28,11 @@ public class ${className}DTO implements Serializable {
     <#if
     column.changeColumnName = 'deletedAt'||
     column.changeColumnName = 'updatedAt'||
-    column.changeColumnName = 'updatedBy'><#else>
+    column.changeColumnName = 'updatedBy'||
+    column.changeColumnName = 'createdBy'><#else>
     <#if column.remark != ''>
-    /**
-     * ${column.remark}
-     */
+
+    /** ${column.remark} */
     @ApiModelProperty("${column.remark}")
     </#if>
     <#if column.columnKey = 'PRI'>
@@ -44,7 +44,6 @@ public class ${className}DTO implements Serializable {
     </#if>
     </#if>
     private ${column.columnType} ${column.changeColumnName};
-
     </#if>
     </#list>
 </#if>

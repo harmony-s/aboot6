@@ -3,8 +3,8 @@ package ${package}.service;
 import ${package}.domain.${className};
 import ${package}.domain.dto.${className}DTO;
 import ${package}.domain.criteria.${className}QueryCriteria;
+import com.wteam.domain.vo.PageModel;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
@@ -22,9 +22,9 @@ public interface ${className}Service {
      *
      * @param criteria 查询条件
      * @param pageable 分页
-     * @return Map<String, Object> {"content": List查询结果, "totalElements": 符合查询条件的数量}
+     * @return Map<String,Object> {"content": List查询结果, "totalElements": 符合查询条件的数量}
      */
-    Map<String, Object> queryAll(${className}QueryCriteria criteria, Pageable pageable);
+    PageModel<${className}DTO> queryAll(${className}QueryCriteria criteria, Pageable pageable);
 
     /**
      * 查询所有数据不分页
@@ -32,7 +32,7 @@ public interface ${className}Service {
      * @param criteria 查询条件
      * @return 查询结果
      */
-    List<${className}DTO> queryAll(${className}QueryCriteria criteria, Sort sort);
+    List<${className}DTO> queryAll(${className}QueryCriteria criteria);
 
     /**
      * 根据ID查询

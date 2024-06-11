@@ -49,7 +49,7 @@
 
     <build>
         <!-- 打包后的启动jar名称 -->
-        <finalName>${project.artifactId}-${project.version}</finalName>
+        <finalName>aboot-demo</finalName>
 
 
         <plugins>

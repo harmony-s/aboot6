@@ -39,8 +39,6 @@ public class GenUtil {
 
     private static final String LOCALDATE = "LocalDate";
 
-    private static final String LOCALTIME = "LocalTime";
-
     private static final String LOCALDATETIME = "LocalDateTime";
 
     private static final String BIGDECIMAL = "BigDecimal";
@@ -238,8 +236,6 @@ public class GenUtil {
         genMap.put("hasTimestamp",false);
         // 存在 LocalDate 字段
         genMap.put("hasLocalDate",false);
-        // 存在 LocalTime 字段
-        genMap.put("hasLocalTime",false);
         // 存在 LocalDateTime 字段
         genMap.put("hasLocalDateTime",false);
         // 查询类中存在 Timestamp 字段
@@ -296,10 +292,6 @@ public class GenUtil {
             // 是否存在 LocalDate 类型的字段
             if(LOCALDATE.equals(colType)){
                 genMap.put("hasLocalDate",true);
-            }
-            // 是否存在 LocalTime 类型的字段
-            if(LOCALTIME.equals(colType)){
-                genMap.put("hasLocalTime",true);
             }
             // 是否存在 LocalDateTime 类型的字段
             if(LOCALDATETIME.equals(colType)){
